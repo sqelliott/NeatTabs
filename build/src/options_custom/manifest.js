@@ -1,8 +1,69 @@
 // SAMPLE
 this.manifest = {
-    "name": "My Extension",
+    "name": "NeatTabs",
     "icon": "icon.png",
     "settings": [
+        {
+            "tab": i18n.get("sessions"),
+            "group": i18n.get("saved-sessions"),
+            "name": "save",
+            "label": i18n.get("Save All Open Tabs"),
+            "text": i18n.get("save"),
+            "type": "button"
+        },
+        {
+            "tab": i18n.get("sessions"),
+            "group": i18n.get("saved-sessions"),
+            "name": "restore",
+            "label": i18n.get("Restore Previous Session"),
+            "text": i18n.get("restore"),
+            "type": "button"
+        },
+        {
+            "tab": i18n.get("sessions"),
+            "group": i18n.get("saved-sessions"),
+            "name": "sessions",
+            "label": i18n.get("saved-user-sessions"),
+            "type": "listBox"
+        },
+        {
+            "tab": i18n.get("analytics"),
+            "group": i18n.get("popular-domains"),
+            "name": "analytics",
+            "label": i18n.get("most-visited"),
+            "type": "listBox"
+        },
+        {
+            "tab": i18n.get("options"),
+            "group": i18n.get("preferences"),
+            "name": "options",
+            "label": i18n.get("extension-settings"),
+            "type": "listBox"
+        },
+        {
+            "tab": i18n.get("about"),
+            "group": i18n.get("who"),
+            "name": "who",
+            "label": i18n.get("what"),
+            "type": "description",
+            "text": i18n.get("description1")
+        },
+        {
+            "tab": i18n.get("about"),
+            "group": i18n.get("what"),
+            "name": "what",
+            "label": i18n.get("what"),
+            "type": "description",
+            "text": i18n.get("description2")
+        },
+        {
+            "tab": i18n.get("about"),
+            "group": i18n.get("why"),
+            "name": "why",
+            "label": i18n.get("what"),
+            "type": "description",
+            "text": i18n.get("description3")
+        },
         {
             "tab": i18n.get("information"),
             "group": i18n.get("login"),
@@ -129,6 +190,10 @@ this.manifest = {
         [
             "noti_volume",
             "sound_volume"
+        ],
+        [
+            "save",
+            "restore"
         ]
     ]
 };
