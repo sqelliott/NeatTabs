@@ -1,17 +1,60 @@
 <!doctype html>
-<style type="text/css">
-	#mainPopup {
-		padding: 10px;
-		height: 200px;
-		width: 400px;
-		font-family: Helvetica, Ubuntu, Arial, sans-serif;
-	}
-	h1 {
-		font-size: 2em;
-	}
-</style>
+<html>
+<head>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
-<div id="mainPopup">
-<h1>Hello extensionizr!</h1>
-<p>To shut this popup down, edit the manifest file and remove the "default popup" key. To edit it, just edit ext/browser_action/browser_action.html. The CSS is there, too.</p>
-</div>
+    <!-- Cascading Style Sheets -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/custom.css" rel="stylesheet" media="screen">
+
+    <script src='popup.js'></script>
+</head>
+
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">NeatTabs</a>
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                <a id="save" href="#">Save</a>
+            </li>
+            <li>
+                <a id="restore" href="#">Restore</a>
+            </li>
+            <li>
+                <a id="options" href="#">Options</a>
+            </li>
+            <li>
+                <a id="export" href="#">Export</a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a id="save_menu" href="#">Save</a>
+                    </li>
+                    <li>
+                        <a id="restore_menu" href="#">Restore</a>
+                    </li>
+                    <li>
+                        <a id="options_menu" href="#">Options</a>
+                    </li>
+                    <li>
+                        <a id="export_menu" href="#">Export</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id='mostVisited_div'></div>
+</nav>
+
+<section>
+    <table class="table table-hover" id="openTabs_table"></table>
+</section>
+</body>
+
+</html>
