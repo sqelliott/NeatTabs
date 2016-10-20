@@ -10,3 +10,8 @@ chrome.extension.onMessage.addListener(
         chrome.pageAction.show(sender.tab.id);
         sendResponse();
     });
+
+function getCurrentDateTime() {
+    var now = new Date();
+    return now.toLocaleString();
+}
