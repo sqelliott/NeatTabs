@@ -2,13 +2,17 @@
  * Created by Arthur on 10/16/16.
  */
 
-
 // Initialization function
 function init() {
     console.log("Starting Logging");
     document.getElementById("save").addEventListener("click", function () {
-        console.log("Save clicked.");
-    })
+        console.log("Saving Session.");
+        return_tabs(save_tabs);
+    });
+    document.getElementById("restore").addEventListener("click", function () {
+        console.log("Restoring Session.");
+        restore_tabs();
+    });
 }
 
 // Fetches all open tabs across all browser windows
@@ -18,7 +22,7 @@ function init() {
 chrome.tabs.query({}, function (tabs) {
         var openTabs_table = document.getElementById("openTabs_table");
 
-        save_tabs(tabs);
+        // save_tabs(tabs);
 
         for (var i = 0; i < tabs.length; i++) {
             // Creates table elements along with tooltips
@@ -37,15 +41,25 @@ chrome.tabs.query({}, function (tabs) {
         }
 
         // Testing the fetch tabs functionality
-        fetch_tabs();
+        // fetch_tabs();
     }
-)
+);
+
+// Callback function for returning URL object
+// https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
+function return_tabs(callback){
+    chrome.tabs.query({},function(tabs){
+        callback(tabs);
+    });
+};
+
 
 // Rough function to save all tab URLs to chrome.storage.sync
 // Uses "saved_tabs" as key
 function save_tabs(tabs) {
+    // var tabs_return = new Object();
     var saved_tabs = new Array();
-
+    console.log(tabs);
     // Only saving URLs instead of all metadata attributes as to stay under the 8KB limit
     // Keep in mind other limitations such as storage limit
     // Should we be using local storage per machine?
@@ -68,8 +82,6 @@ function save_tabs(tabs) {
 // Rough function to return stored array of URLs in chrome.storage
 // Uses "saved_tabs" as key
 function fetch_tabs() {
-    var saved_tabs = new Array();
-
     // Uses saved_tabs as a key to fetch array of stored URLs
     chrome.storage.sync.get("saved_tabs", function (items) {
         if (chrome.runtime.error) {
@@ -82,6 +94,13 @@ function fetch_tabs() {
     });
 }
 
+// Function to reopen all saved tabs in a new window
+function restore_tabs() {
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        chrome.windows.create({focused: true, url: items.saved_tabs});
+    });
+}
+
 // Event listener for clicks on links in a browser action popup.
 // Open the link in a new tab of the current window.
 function onAnchorClick(event) {
@@ -90,4 +109,4 @@ function onAnchorClick(event) {
 }
 
 // Initialization routine
-document.addEventListener('DOMContentLoaded', init, false);
+document.addEventListener('DOMContentLoaded', init);
