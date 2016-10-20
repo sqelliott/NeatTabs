@@ -2,25 +2,92 @@
  * Created by Arthur on 10/16/16.
  */
 
+
+// Initialization function
+function init() {
+    console.log("Starting Logging");
+    document.getElementById("save").addEventListener("click", function () {
+        console.log("Save clicked.");
+    })
+}
+
+// Fetches all open tabs across all browser windows
+// Lists URLs as their titles with links to the HTML table
+// TODO Move into the init function
+// TODO Add a sort function
 chrome.tabs.query({}, function (tabs) {
         var openTabs_table = document.getElementById("openTabs_table");
 
+        save_tabs(tabs);
+
         for (var i = 0; i < tabs.length; i++) {
+            // Creates table elements along with tooltips
             var a = document.createElement('a');
             a.href = tabs[i].url;
             a.appendChild(document.createTextNode(tabs[i].title));
+            a.setAttribute("title", tabs[i].url);
             a.addEventListener('click', onAnchorClick);
 
+            // Inserts created elements into the table in the HTML page
             var row = openTabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
         }
-    }
-);
 
+        // Testing the fetch tabs functionality
+        fetch_tabs();
+    }
+)
+
+// Rough function to save all tab URLs to chrome.storage.sync
+// Uses "saved_tabs" as key
+function save_tabs(tabs) {
+    var saved_tabs = new Array();
+
+    // Only saving URLs instead of all metadata attributes as to stay under the 8KB limit
+    // Keep in mind other limitations such as storage limit
+    // Should we be using local storage per machine?
+    // https://developer.chrome.com/extensions/storage#type-StorageArea
+    for (var i = 0; i < tabs.length; i++) {
+        saved_tabs[i] = tabs[i].url;
+    }
+
+    // Actual function call to store the array of URLs
+    chrome.storage.sync.set({"saved_tabs": saved_tabs}), function () {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Save Success.");
+        }
+    };
+}
+
+// Rough function to return stored array of URLs in chrome.storage
+// Uses "saved_tabs" as key
+function fetch_tabs() {
+    var saved_tabs = new Array();
+
+    // Uses saved_tabs as a key to fetch array of stored URLs
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Fetch Success.");
+            console.log(items);
+        }
+    });
+}
+
+// Event listener for clicks on links in a browser action popup.
+// Open the link in a new tab of the current window.
 function onAnchorClick(event) {
-    chrome.tabs.create({ url: event.srcElement.href });
+    chrome.tabs.create({url: event.srcElement.href});
     return false;
 }
+
+// Initialization routine
+document.addEventListener('DOMContentLoaded', init, false);

@@ -12,15 +12,14 @@
   "default_locale": "en",
   "background": {
     "page": "src/bg/background.html",
-    "persistent": false
+    "persistent": true
   },
   "options_page": "src/options_custom/index.html",
   "browser_action": {
     "default_icon": "icons/icon19.png",
-    "default_title": "browser action demo",
+    "default_title": "browser action",
     "default_popup": "src/browser_action/browser_action.html"
   },
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "permissions": [
     "bookmarks",
     "history",
