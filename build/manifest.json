@@ -25,6 +25,7 @@
     "history",
     "tabs",
     "storage",
-    "topSites"
+    "topSites",
+    "downloads"
   ]
 }

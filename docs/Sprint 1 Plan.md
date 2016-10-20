@@ -1,6 +1,7 @@
 # Sprint Plan 1
 
 ### Weekly Meeting Times
++ Meeting Location: JB316/JB340B
 + Tuesday: 9:45AM
 + Wednesday: 11:50PM
 + Friday: 11:50PM
@@ -12,4 +13,4 @@
 + HTML page for functionality options: Arthur, Richa
 + Basic Framework: Arthur, Sean
 + Research Javascript Libraries: Richa, Gerardo
-+ Individual work: Coursea JS, HTML/CSS, Chrome
++ Individual work: Coursera JS, HTML/CSS, Chrome

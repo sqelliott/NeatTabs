@@ -7,11 +7,19 @@ function init() {
     console.log("Starting Logging");
     document.getElementById("save").addEventListener("click", function () {
         console.log("Saving Session.");
-        return_tabs(save_tabs);
+        return_callback(save_tabs);
     });
     document.getElementById("restore").addEventListener("click", function () {
         console.log("Restoring Session.");
         restore_tabs();
+    });
+    document.getElementById("options").addEventListener("click", function () {
+        console.log("Options Menu.");
+        chrome.tabs.create({ url: "src/options_custom/index.html" });
+    });
+    document.getElementById("export").addEventListener("click", function () {
+        console.log("Options Menu.");
+        restore_callback(export_tabs);
     });
 }
 
@@ -47,11 +55,17 @@ chrome.tabs.query({}, function (tabs) {
 
 // Callback function for returning URL object
 // https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
-function return_tabs(callback){
+function return_callback(callback){
     chrome.tabs.query({},function(tabs){
         callback(tabs);
     });
 };
+
+function restore_callback(callback) {
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        callback(items)
+    });
+}
 
 
 // Rough function to save all tab URLs to chrome.storage.sync
@@ -60,6 +74,7 @@ function save_tabs(tabs) {
     // var tabs_return = new Object();
     var saved_tabs = new Array();
     console.log(tabs);
+
     // Only saving URLs instead of all metadata attributes as to stay under the 8KB limit
     // Keep in mind other limitations such as storage limit
     // Should we be using local storage per machine?
@@ -98,6 +113,19 @@ function fetch_tabs() {
 function restore_tabs() {
     chrome.storage.sync.get("saved_tabs", function (items) {
         chrome.windows.create({focused: true, url: items.saved_tabs});
+    });
+}
+
+// Function to export all saved tabs to a .csv file
+function export_tabs(items) {
+    var result = items.saved_tabs.toString();
+    var download_link = document.createElement("a");
+    download_link.href = "data:text/csv," + result;
+    console.log(download_link);
+
+    chrome.downloads.download({
+        url: download_link.toString(),
+        filename: 'export.csv'
     });
 }
 
