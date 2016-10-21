@@ -1,4 +1,4 @@
-# Release Plan
+# Sprint Release Plan
 
 ## Heading
 + Document Name: Release Plan
