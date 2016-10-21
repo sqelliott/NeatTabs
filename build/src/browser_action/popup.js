@@ -98,6 +98,7 @@ function save_tabs(tabs) {
     };
 }
 
+// Basic function to clear saved data in chrome.storage.sync
 function clear_storage() {
     chrome.storage.sync.clear();
 }
