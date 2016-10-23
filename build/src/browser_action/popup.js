@@ -1,27 +1,23 @@
-/**
- * Created by Arthur on 10/16/16.
- */
-
 // Initialization function
 function init() {
     console.log("Starting Logging");
-    document.getElementById("save").addEventListener("click", function () {
+    document.getElementById("save_menu").addEventListener("click", function () {
         console.log("Saving Session.");
         return_callback(save_tabs);
     });
-    document.getElementById("restore").addEventListener("click", function () {
+    document.getElementById("restore_menu").addEventListener("click", function () {
         console.log("Restoring Session.");
         restore_tabs();
     });
-    document.getElementById("clear").addEventListener("click", function () {
+    document.getElementById("clear_menu").addEventListener("click", function () {
         console.log("Clearing Session.");
         clear_storage();
     });
-    document.getElementById("options").addEventListener("click", function () {
+    document.getElementById("options_menu").addEventListener("click", function () {
         console.log("Options Menu.");
         chrome.tabs.create({ url: "src/options_custom/index.html" });
     });
-    document.getElementById("export").addEventListener("click", function () {
+    document.getElementById("export_menu").addEventListener("click", function () {
         console.log("Options Menu.");
         restore_callback(export_tabs);
     });
