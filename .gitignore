@@ -7,6 +7,7 @@
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
@@ -50,4 +51,3 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml
 # *.ipr
-.idea/
