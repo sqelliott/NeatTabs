@@ -13,16 +13,16 @@
 
 <body>
 <nav class="navbar navbar-default" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#">NeatTabs</a>
+    <div class="navbar-header ">
+        <a class="navbar-brand" href="https://github.com/acchiao/NeatTabs" id="neat_tabs">NeatTabs</a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
             <li>
-                <a id="saved_tabs" href='#'>Saved Tabs</a>
+                <a id="current_tabs" href="#">Current Tabs</a>
             </li>
             <li>
-                <a id="current_tabs" href="#">Current Tabs</a>
+                <a id="saved_tabs" href='#'>Saved Tabs</a>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
@@ -54,7 +54,16 @@
 </nav>
 
 <section>
-    <table class="table table-hover" id="openTabs_table"></table>
+    <div>
+        <table class="table table-hover" id="current_tabs_table">
+            <caption>Current Tabs</caption>
+        </table>
+    </div>
+    <div>
+        <table class="table table-hover" id="saved_tabs_table">
+            <caption>Saved Tabs</caption>
+        </table>
+    </div>
 </section>
 </body>
 
