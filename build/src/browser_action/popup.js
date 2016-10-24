@@ -13,6 +13,10 @@ function init() {
         console.log("Restoring Session.");
         restore_tabs();
     });
+    document.getElementById("clear").addEventListener("click", function () {
+        console.log("Clearing Session.");
+        clear_storage();
+    });
     document.getElementById("options").addEventListener("click", function () {
         console.log("Options Menu.");
         chrome.tabs.create({ url: "src/options_custom/index.html" });
@@ -92,6 +96,10 @@ function save_tabs(tabs) {
             console.log("Save Success.");
         }
     };
+}
+
+function clear_storage() {
+    chrome.storage.sync.clear();
 }
 
 // Rough function to return stored array of URLs in chrome.storage
