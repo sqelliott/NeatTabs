@@ -21,6 +21,10 @@ function init() {
         console.log("Options Menu.");
         chrome.tabs.create({ url: "src/options_custom/index.html" });
     });
+    document.getElementById("neatTabs").addEventListener("click", function () {
+        console.log("Options Menu.");
+        chrome.tabs.create({ url: "src/options_custom/index.html" });
+    });
     document.getElementById("export").addEventListener("click", function () {
         console.log("Options Menu.");
         restore_callback(export_tabs);
@@ -43,13 +47,20 @@ chrome.tabs.query({}, function (tabs) {
             a.appendChild(document.createTextNode(tabs[i].title));
             a.setAttribute("title", tabs[i].url);
             a.addEventListener('click', onAnchorClick);
+            var btn = document.createElement("BUTTON");
+            var btnText = document.createTextNode("Remove");
+            btn.appendChild(btnText);
+            b.addEventListener('click', removeTab);
+
 
             // Inserts created elements into the table in the HTML page
             var row = openTabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
+            cell3.appendChild(btn);
         }
 
         // Testing the fetch tabs functionality
@@ -142,6 +153,14 @@ function export_tabs(items) {
 function onAnchorClick(event) {
     chrome.tabs.create({url: event.srcElement.href});
     return false;
+}
+
+// Remove a tab from current que
+function removeTab(event){
+    var openTabs_table = document.getElementById("openTabs_table");
+    //openTabs_table.deleteRow(0);
+    return false;
+
 }
 
 // Initialization routine
