@@ -43,15 +43,7 @@ function init() {
         console.log("Options Menu.");
         chrome.tabs.create({url: "src/options_custom/index.html"});
     });
-<<<<<<< HEAD
-    document.getElementById("neatTabs").addEventListener("click", function () {
-        console.log("Options Menu.");
-        chrome.tabs.create({ url: "src/options_custom/index.html" });
-    });
-    document.getElementById("export").addEventListener("click", function () {
-=======
     document.getElementById("export_menu").addEventListener("click", function () {
->>>>>>> master
         console.log("Options Menu.");
         restore_callback(export_tabs);
     });
@@ -68,12 +60,21 @@ function create_current_table(tabs) {
         a.setAttribute("title", tabs[i].url);
         a.addEventListener('click', onAnchorClick);
 
+        //button to remove a tab from a save_tabs call
+        var btn = document.createElement('p');     
+        btn.addEventListener("click",removeCurrentTab);
+        btn.href = tabs[i].url;
+        var btnText = document.createTextNode('X');
+        btn.appendChild(btnText);
+
         // Inserts created elements into the table in the HTML page
         var row = current_tabs_table.insertRow(i);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
         cell1.innerHTML = String(i + 1) + ".";
         cell2.appendChild(a);
+        cell3.appendChild(btn);
     }
 };
 
@@ -89,20 +90,13 @@ function create_saved_table() {
             a.appendChild(document.createTextNode(items.saved_tabs[i]));
             a.setAttribute("title", items.saved_tabs[i]);
             a.addEventListener('click', onAnchorClick);
-            var btn = document.createElement("BUTTON");
-            var btnText = document.createTextNode("Remove");
-            btn.appendChild(btnText);
-            b.addEventListener('click', removeTab);
-
 
             // Inserts created elements into the table in the HTML page
             var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
-            cell3.appendChild(btn);
         }
     });
 };
@@ -191,15 +185,21 @@ function export_tabs(items) {
 // Open the link in a new tab of the current window.
 function onAnchorClick(event) {
     chrome.tabs.create({url: event.srcElement.href});
+    console.log(event.srcElement.toString());
     return false;
 }
 
-// Remove a tab from current que
-function removeTab(event){
-    var openTabs_table = document.getElementById("openTabs_table");
-    //openTabs_table.deleteRow(0);
-    return false;
-
+// Event listener for clicks on current tabs button
+// Select a tab that user does not want to save
+function removeCurrentTab(event) {
+    var current_tabs_table = document.getElementById("current_tabs_table");
+    /*for( var i = 0; i < tabs.length; i++){
+        if (tabs.url[i] == event.srcElement.href){
+            break;
+        }
+    }*/
+    current_tabs_table.deleteRow(0);
+    console.log(event.srcElement.href);
 }
 
 // Initialization routine
