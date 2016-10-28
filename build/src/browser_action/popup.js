@@ -51,7 +51,6 @@ function init() {
 
 function create_current_table(tabs) {
     var current_tabs_table = document.getElementById("current_tabs_table");
-
     for (var i = 0; i < tabs.length; i++) {
         // Creates table elements along with tooltips
         var a = document.createElement('a');
@@ -193,13 +192,9 @@ function onAnchorClick(event) {
 // Select a tab that user does not want to save
 function removeCurrentTab(event) {
     var current_tabs_table = document.getElementById("current_tabs_table");
-    /*for( var i = 0; i < tabs.length; i++){
-        if (tabs.url[i] == event.srcElement.href){
-            break;
-        }
-    }*/
-    current_tabs_table.deleteRow(0);
-    console.log(event.srcElement.href);
+    var rowInd = event.srcElement.parentNode.parentNode.rowIndex;
+    current_tabs_table.deleteRow(rowInd);
+    
 }
 
 // Initialization routine
