@@ -11,13 +11,13 @@
   },
   "default_locale": "en",
   "background": {
-    "page": "src/bg/background.html",
+    "page": "src/background/background.html",
     "persistent": true
   },
-  "options_page": "src/options_custom/index.html",
+  "options_page": "src/options_page/options.html",
   "browser_action": {
     "default_icon": "icons/icon19.png",
-    "default_title": "browser action",
+    "default_title": "NeatTabs",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [

@@ -1,51 +1,93 @@
-/**
- * Created by Arthur on 10/16/16.
- */
-
 // Initialization function
+
+console = chrome.extension.getBackgroundPage().console;
+
 function init() {
     console.log("Starting Logging");
-    document.getElementById("save").addEventListener("click", function () {
+
+    return_callback(create_current_table);
+    create_saved_table();
+
+    document.getElementById("current_tabs").addEventListener("click", function () {
+        console.log("Showing Current Tabs.");
+        var saved_tabs_table = document.getElementById("saved_tabs_table");
+        var current_tabs_table = document.getElementById("current_tabs_table");
+
+        saved_tabs_table.style.display = "none";
+        current_tabs_table.style.display = "";
+    });
+
+    document.getElementById("saved_tabs").addEventListener("click", function () {
+        console.log("Showing Saved Tabs.");
+        var saved_tabs_table = document.getElementById("saved_tabs_table");
+        var current_tabs_table = document.getElementById("current_tabs_table");
+
+        saved_tabs_table.style.display = "";
+        current_tabs_table.style.display = "none";
+
+    });
+
+    document.getElementById("save_menu").addEventListener("click", function () {
         console.log("Saving Session.");
         return_callback(save_tabs);
     });
-    document.getElementById("restore").addEventListener("click", function () {
+    document.getElementById("restore_menu").addEventListener("click", function () {
         console.log("Restoring Session.");
         restore_tabs();
     });
-    document.getElementById("clear").addEventListener("click", function () {
+    document.getElementById("clear_menu").addEventListener("click", function () {
         console.log("Clearing Session.");
         clear_storage();
     });
-    document.getElementById("options").addEventListener("click", function () {
+    document.getElementById("options_menu").addEventListener("click", function () {
         console.log("Options Menu.");
-        chrome.tabs.create({ url: "src/options_custom/index.html" });
+        chrome.tabs.create({url: "src/options_custom/index.html"});
     });
+<<<<<<< HEAD
     document.getElementById("neatTabs").addEventListener("click", function () {
         console.log("Options Menu.");
         chrome.tabs.create({ url: "src/options_custom/index.html" });
     });
     document.getElementById("export").addEventListener("click", function () {
+=======
+    document.getElementById("export_menu").addEventListener("click", function () {
+>>>>>>> master
         console.log("Options Menu.");
         restore_callback(export_tabs);
     });
 }
 
-// Fetches all open tabs across all browser windows
-// Lists URLs as their titles with links to the HTML table
-// TODO Move into the init function
-// TODO Add a sort function
-chrome.tabs.query({}, function (tabs) {
-        var openTabs_table = document.getElementById("openTabs_table");
+function create_current_table(tabs) {
+    var current_tabs_table = document.getElementById("current_tabs_table");
 
-        // save_tabs(tabs);
+    for (var i = 0; i < tabs.length; i++) {
+        // Creates table elements along with tooltips
+        var a = document.createElement('a');
+        a.href = tabs[i].url;
+        a.appendChild(document.createTextNode(tabs[i].title));
+        a.setAttribute("title", tabs[i].url);
+        a.addEventListener('click', onAnchorClick);
 
-        for (var i = 0; i < tabs.length; i++) {
+        // Inserts created elements into the table in the HTML page
+        var row = current_tabs_table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
+    }
+};
+
+function create_saved_table() {
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        console.log(items.saved_tabs);
+        for (var i = 0; i < items.saved_tabs.length; i++) {
             // Creates table elements along with tooltips
             var a = document.createElement('a');
-            a.href = tabs[i].url;
-            a.appendChild(document.createTextNode(tabs[i].title));
-            a.setAttribute("title", tabs[i].url);
+            a.href = items.saved_tabs[i];
+            a.appendChild(document.createTextNode(items.saved_tabs[i]));
+            a.setAttribute("title", items.saved_tabs[i]);
             a.addEventListener('click', onAnchorClick);
             var btn = document.createElement("BUTTON");
             var btnText = document.createTextNode("Remove");
@@ -54,7 +96,7 @@ chrome.tabs.query({}, function (tabs) {
 
 
             // Inserts created elements into the table in the HTML page
-            var row = openTabs_table.insertRow(i);
+            var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
@@ -62,16 +104,13 @@ chrome.tabs.query({}, function (tabs) {
             cell2.appendChild(a);
             cell3.appendChild(btn);
         }
-
-        // Testing the fetch tabs functionality
-        // fetch_tabs();
-    }
-);
+    });
+};
 
 // Callback function for returning URL object
 // https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
-function return_callback(callback){
-    chrome.tabs.query({},function(tabs){
+function return_callback(callback) {
+    chrome.tabs.query({}, function (tabs) {
         callback(tabs);
     });
 };
@@ -86,7 +125,6 @@ function restore_callback(callback) {
 // Rough function to save all tab URLs to chrome.storage.sync
 // Uses "saved_tabs" as key
 function save_tabs(tabs) {
-    // var tabs_return = new Object();
     var saved_tabs = new Array();
     console.log(tabs);
 
@@ -109,6 +147,7 @@ function save_tabs(tabs) {
     };
 }
 
+// Basic function to clear saved data in chrome.storage.sync
 function clear_storage() {
     chrome.storage.sync.clear();
 }
