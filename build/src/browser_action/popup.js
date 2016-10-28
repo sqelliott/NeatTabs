@@ -72,7 +72,7 @@ function create_current_table(tabs) {
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
             // Creates table elements along with tooltips
@@ -101,28 +101,21 @@ function return_callback(callback) {
 };
 
 function restore_callback(callback) {
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         callback(items)
     });
 }
 
-
-// Rough function to save all tab URLs to chrome.storage.sync
-// Uses "saved_tabs" as key
+// Saves only tab urls
 function save_tabs(tabs) {
     var saved_tabs = new Array();
     console.log(tabs);
 
-    // Only saving URLs instead of all metadata attributes as to stay under the 8KB limit
-    // Keep in mind other limitations such as storage limit
-    // Should we be using local storage per machine?
-    // https://developer.chrome.com/extensions/storage#type-StorageArea
     for (var i = 0; i < tabs.length; i++) {
         saved_tabs[i] = tabs[i].url;
     }
 
-    // Actual function call to store the array of URLs
-    chrome.storage.sync.set({"saved_tabs": saved_tabs}), function () {
+    chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
         if (chrome.runtime.error) {
             console.log("Runtime error.");
         }
@@ -132,29 +125,14 @@ function save_tabs(tabs) {
     };
 }
 
-// Basic function to clear saved data in chrome.storage.sync
+// Clears local storage
 function clear_storage() {
-    chrome.storage.sync.clear();
-}
-
-// Rough function to return stored array of URLs in chrome.storage
-// Uses "saved_tabs" as key
-function fetch_tabs() {
-    // Uses saved_tabs as a key to fetch array of stored URLs
-    chrome.storage.sync.get("saved_tabs", function (items) {
-        if (chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        else {
-            console.log("Fetch Success.");
-            console.log(items);
-        }
-    });
+    chrome.storage.local.clear();
 }
 
 // Function to reopen all saved tabs in a new window
 function restore_tabs() {
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         chrome.windows.create({focused: true, url: items.saved_tabs});
     });
 }
