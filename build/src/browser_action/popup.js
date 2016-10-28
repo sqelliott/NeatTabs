@@ -1,7 +1,3 @@
-// Initialization function
-
-console = chrome.extension.getBackgroundPage().console;
-
 function init() {
     console.log("Starting Logging");
 
