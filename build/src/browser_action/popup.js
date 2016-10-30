@@ -2,6 +2,7 @@
 
 console = chrome.extension.getBackgroundPage().console;
 
+
 function init() {
     console.log("Starting Logging");
 
@@ -194,8 +195,19 @@ function removeCurrentTab(event) {
     var current_tabs_table = document.getElementById("current_tabs_table");
     var rowInd = event.srcElement.parentNode.parentNode.rowIndex;
     current_tabs_table.deleteRow(rowInd);
-    
+    console.log("deleted row " +(rowInd+1)+" from current_tabs_table");
+
+    var current_tabs_table_length = current_tabs_table.rows.length;
+    for (var i = rowInd; i < current_tabs_table_length; i++){
+        console.log(i+"th row");
+        console.log(current_tabs_table_length+" rows");
+        var cell = current_tabs_table.rows[i].cells;
+        cell[0].innerHTML = String(i+1) +".";
+        console.log("current_tabs_table updated");
+    }
+
 }
+
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
