@@ -6,10 +6,10 @@ function init() {
 
     document.getElementById("current_tabs").addEventListener("click", function () {
         console.log("Showing Current Tabs.");
-        var saved_tabs_table = document.getElementById("saved_tabs_table");
+        var saved_table = document.getElementById("saved_tabs_table");
         var current_tabs_table = document.getElementById("current_tabs_table");
 
-        saved_tabs_table.style.display = "none";
+        saved_table.style.display = "none";
         current_tabs_table.style.display = "";
     });
 
