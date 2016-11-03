@@ -1,6 +1,8 @@
 // Initialization function
 
 console = chrome.extension.getBackgroundPage().console;
+//control tabs to be saved by user
+current_tabs_bitVector = new Array();
 
 
 function init() {
@@ -53,6 +55,10 @@ function init() {
 function create_current_table(tabs) {
     var current_tabs_table = document.getElementById("current_tabs_table");
     for (var i = 0; i < tabs.length; i++) {
+        // initial current_tabs_bitVector
+        // to save all tabs
+        current_tabs_bitVector[i] = 1;
+
         // Creates table elements along with tooltips
         var a = document.createElement('a');
         a.href = tabs[i].url;
@@ -61,10 +67,9 @@ function create_current_table(tabs) {
         a.addEventListener('click', onAnchorClick);
 
         //button to remove a tab from a save_tabs call
-        var btn = document.createElement('p');     
-        btn.addEventListener("click",removeCurrentTab);
-        btn.href = tabs[i].url;
-        var btnText = document.createTextNode('X');
+        var btn = document.createElement('BUTTON');     
+        btn.addEventListener("click",excludeCurrentTab);
+        var btnText = document.createTextNode('Exclude');
         btn.appendChild(btnText);
 
         // Inserts created elements into the table in the HTML page
@@ -84,6 +89,7 @@ function create_saved_table() {
     chrome.storage.sync.get("saved_tabs", function (items) {
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
+
             // Creates table elements along with tooltips
             var a = document.createElement('a');
             a.href = items.saved_tabs[i];
@@ -91,12 +97,21 @@ function create_saved_table() {
             a.setAttribute("title", items.saved_tabs[i]);
             a.addEventListener('click', onAnchorClick);
 
+            // EDITS
+            //button to remove a tab from a save_tabs call
+            /*var btn = document.createElement('p');     
+            btn.addEventListener("click",removeSaveTab);
+            var btnText = document.createTextNode('X');
+            btn.appendChild(btnText);*/
+
             // Inserts created elements into the table in the HTML page
             var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
+            /*cell3.appendChild(btn);*/
         }
     });
 };
@@ -126,8 +141,11 @@ function save_tabs(tabs) {
     // Keep in mind other limitations such as storage limit
     // Should we be using local storage per machine?
     // https://developer.chrome.com/extensions/storage#type-StorageArea
-    for (var i = 0; i < tabs.length; i++) {
-        saved_tabs[i] = tabs[i].url;
+    for (var i = 0, j =0; i < tabs.length; i++) {
+            console.log(i+" "+current_tabs_bitVector[i]);
+            if( current_tabs_bitVector[i]){
+                    saved_tabs[j++] = tabs[i].url;
+            }
     }
 
     // Actual function call to store the array of URLs
@@ -191,22 +209,54 @@ function onAnchorClick(event) {
 
 // Event listener for clicks on current tabs button
 // Select a tab that user does not want to save
-function removeCurrentTab(event) {
+function excludeCurrentTab(event) {
     var current_tabs_table = document.getElementById("current_tabs_table");
-    var rowInd = event.srcElement.parentNode.parentNode.rowIndex;
-    current_tabs_table.deleteRow(rowInd);
-    console.log("deleted row " +(rowInd+1)+" from current_tabs_table");
+    var btn = event.srcElement;
+    var btnChild = btn.childNodes;
+    btn.removeChild(btn.childNodes[0]);
 
-    var current_tabs_table_length = current_tabs_table.rows.length;
-    for (var i = rowInd; i < current_tabs_table_length; i++){
-        console.log(i+"th row");
-        console.log(current_tabs_table_length+" rows");
-        var cell = current_tabs_table.rows[i].cells;
-        cell[0].innerHTML = String(i+1) +".";
-        console.log("current_tabs_table updated");
+    var row = event.srcElement.parentNode.parentNode;
+    var rowInd = row.rowIndex;
+
+    if(current_tabs_bitVector[rowInd]==1){
+        current_tabs_bitVector[rowInd] = 0;
+        var btnText = document.createTextNode("Include");
+        btn.appendChild(btnText);
+        console.log("exclude " +(rowInd+1)+" from current_tabs_table");
+    }
+    else{
+        current_tabs_bitVector[rowInd] = 1;
+        var btnText = document.createTextNode("Exclude");
+        btn.appendChild(btnText);
+        console.log("Include " +(rowInd+1)+" from current_tabs_table");
     }
 
+
 }
+
+/*function removeSaveTab(event){
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+    var row = event.srcElement.parentNode.parentNode;
+    var rowInd = row.rowIndex;
+
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        var saved_tabs = items.saved_tabs;
+        console.log(saved_tabs);
+        var new_saved_tabs =saved_tabs.slice(rowInd,rowInd+1);
+        console.log(new_saved_tabs);
+
+    });
+
+    chrome.storage.sync.set({"saved_tabs": new_saved_tabs}), function () {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Save Success.");
+        }
+    };
+
+}*/
 
 
 // Initialization routine
