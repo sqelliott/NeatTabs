@@ -142,10 +142,21 @@ function save_tabs(tabs) {
     // Should we be using local storage per machine?
     // https://developer.chrome.com/extensions/storage#type-StorageArea
     for (var i = 0, j =0; i < tabs.length; i++) {
-            console.log(i+" "+current_tabs_bitVector[i]);
             if( current_tabs_bitVector[i]){
                     saved_tabs[j++] = tabs[i].url;
             }
+    }
+
+    // bubble sort
+    // list tabs alphabetically
+    for ( var k =0; k < saved_tabs.length; k++){
+        for ( var l = 1; l <= k; l++){
+            if(saved_tabs[l -1] > saved_tabs[l]){
+                var temp = saved_tabs[l-1];
+                saved_tabs[l-1] = saved_tabs[l];
+                saved_tabs[j] = temp;
+            }
+        }
     }
 
     // Actual function call to store the array of URLs
