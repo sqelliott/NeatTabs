@@ -4,7 +4,6 @@ console = chrome.extension.getBackgroundPage().console;
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
 
-
 function init() {
     console.log("Starting Logging");
 
@@ -13,10 +12,10 @@ function init() {
 
     document.getElementById("current_tabs").addEventListener("click", function () {
         console.log("Showing Current Tabs.");
-        var saved_tabs_table = document.getElementById("saved_tabs_table");
+        var saved_table = document.getElementById("saved_tabs_table");
         var current_tabs_table = document.getElementById("current_tabs_table");
 
-        saved_tabs_table.style.display = "none";
+        saved_table.style.display = "none";
         current_tabs_table.style.display = "";
     });
 
@@ -86,7 +85,7 @@ function create_current_table(tabs) {
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
@@ -125,14 +124,12 @@ function return_callback(callback) {
 };
 
 function restore_callback(callback) {
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         callback(items)
     });
 }
 
-
-// Rough function to save all tab URLs to chrome.storage.sync
-// Uses "saved_tabs" as key
+// Saves only tab urls
 function save_tabs(tabs) {
     var saved_tabs = new Array();
     console.log(tabs);
@@ -147,20 +144,8 @@ function save_tabs(tabs) {
             }
     }
 
-    // bubble sort
-    // list tabs alphabetically
-    for ( var k =0; k < saved_tabs.length; k++){
-        for ( var l = 1; l <= k; l++){
-            if(saved_tabs[l -1] > saved_tabs[l]){
-                var temp = saved_tabs[l-1];
-                saved_tabs[l-1] = saved_tabs[l];
-                saved_tabs[j] = temp;
-            }
-        }
-    }
 
-    // Actual function call to store the array of URLs
-    chrome.storage.sync.set({"saved_tabs": saved_tabs}), function () {
+    chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
         if (chrome.runtime.error) {
             console.log("Runtime error.");
         }
@@ -170,29 +155,14 @@ function save_tabs(tabs) {
     };
 }
 
-// Basic function to clear saved data in chrome.storage.sync
+// Clears local storage
 function clear_storage() {
-    chrome.storage.sync.clear();
-}
-
-// Rough function to return stored array of URLs in chrome.storage
-// Uses "saved_tabs" as key
-function fetch_tabs() {
-    // Uses saved_tabs as a key to fetch array of stored URLs
-    chrome.storage.sync.get("saved_tabs", function (items) {
-        if (chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        else {
-            console.log("Fetch Success.");
-            console.log(items);
-        }
-    });
+    chrome.storage.local.clear();
 }
 
 // Function to reopen all saved tabs in a new window
 function restore_tabs() {
-    chrome.storage.sync.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function (items) {
         chrome.windows.create({focused: true, url: items.saved_tabs});
     });
 }
