@@ -1,3 +1,5 @@
+.idea/
+
 # Created by https://www.gitignore.io/api/intellij
 
 ### Intellij ###
@@ -7,6 +9,7 @@
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
