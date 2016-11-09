@@ -33,6 +33,10 @@ function init() {
         console.log("Saving Session.");
         return_callback(save_tabs);
     });
+    document.getElementById("track_menu").addEventListener("click", function () {
+        console.log("Tracking Session.");
+        return_callback(track_tabs);
+    });
     document.getElementById("restore_menu").addEventListener("click", function () {
         console.log("Restoring Session.");
         restore_tabs();
@@ -214,6 +218,69 @@ function excludeCurrentTab(event) {
 
 
 }
+
+
+//Object to save the url and time
+function track_url(url, time) {
+    this._url = url;
+    this._time = time;
+
+}
+//get the current time
+function set_current_time() {
+    var now =  new Date();
+    return now;
+
+}
+//check if track_tabs is empty.
+function get_track_tabs(){
+chrome.storage.local.get("track_tabs", function (items) {
+    if(items.track_tabs.length > 0){
+
+        return false;
+    }
+   else {
+       return true;
+    }
+});
+}
+
+//Populate the track_tabs array
+function track_tabs(tabs) {
+    console.log("before the loop");
+
+    //check if the track_tabs array has been populated already.
+    //if the track_tabs is empty continue.  
+    if (get_track_tabs()) {
+
+    console.log("Inside the loop");
+
+    var track_tabs = new Array();
+    for (var i = 0; i < tabs.length; i++) {
+
+        track_tabs[i] = new track_url(tabs[i].url, set_current_time());
+    }
+
+
+
+    console.log(track_tabs);
+ // save the track_url object into track_tabs
+    chrome.storage.local.set({"track_tabs": track_tabs}), function () {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Save Success.");
+        }
+      };
+    }
+
+
+
+    console.log("outside the loop");
+return false;
+}
+
 
 /*function removeSaveTab(event){
     var saved_tabs_table = document.getElementById("saved_tabs_table");
