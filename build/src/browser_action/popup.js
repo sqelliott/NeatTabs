@@ -129,7 +129,7 @@ function return_callback(callback) {
 
 function restore_callback(callback) {
     chrome.storage.local.get("saved_tabs", function (items) {
-        callback(items)
+        callback(items);
     });
 }
 
@@ -233,7 +233,7 @@ function set_current_time() {
 
 }
 //check if track_tabs is empty.
-function get_track_tabs(){
+/*function get_track_tabs(){
 chrome.storage.local.get("track_tabs", function (items) {
     if(items.track_tabs.length > 0){
 
@@ -244,43 +244,63 @@ chrome.storage.local.get("track_tabs", function (items) {
     }
 });
 }
+*/
 
-//Populate the track_tabs array
-function track_tabs(tabs) {
-    console.log("before the loop");
+//Enter current url to the the track_tabs array
+function track_tabs(current_url) {
+   console.log( "inside track_tabs: " + current_url.length);
 
-    //check if the track_tabs array has been populated already.
-    //if the track_tabs is empty continue.  
-    if (get_track_tabs()) {
+    if (current_url.length>0){
 
-    console.log("Inside the loop");
-
-    var track_tabs = new Array();
-    for (var i = 0; i < tabs.length; i++) {
-
-        track_tabs[i] = new track_url(tabs[i].url, set_current_time());
-    }
-
-
-
-    console.log(track_tabs);
- // save the track_url object into track_tabs
-    chrome.storage.local.set({"track_tabs": track_tabs}), function () {
-        if (chrome.runtime.error) {
+        var current_url_time = new track_url(current_url[1], set_current_time());
+        console.log("added to local storage : " + current_url_time._url + current_url_time._time);
+        // save the current url object into track_tabs
+        chrome.storage.local.set({"track_tabs": current_url_time}), function () {
+          if (chrome.runtime.error) {
             console.log("Runtime error.");
-        }
-        else {
-            console.log("Save Success.");
-        }
+          }
+         else {
+             console.log("Save to tracker Success.");
+         }
       };
     }
-
-
 
     console.log("outside the loop");
 return false;
 }
 
+setTimeout(return_active_focus(),2000);
+
+function return_active_focus(){
+var current_url;
+    console.log("inside return_active_focus");
+    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
+    //check whether the tabs are active in their windows
+    // and whether the tabs are in the current window.
+    chrome.tabs.query({active: true, lastFocusedWindow: true}, function(current_tabs) {
+        //it should only have one tab.
+        if (current_tabs.length == 1){
+             current_url = current_tabs[0].url.match(Regexp);
+
+            //Check if the window is focus.
+            chrome.windows.get(current_tabs[0].windowId, function (window) {
+                if (!window.focused){
+                    current_url = null;
+                    console.log("Current active/focused: NULL ");
+                }
+                   // current_url;
+                     track_tabs( current_url);
+                    console.log("Current active/focused: "+ current_url[0]);
+            });
+        }
+
+
+
+    });
+
+
+    return false;
+}
 
 /*function removeSaveTab(event){
     var saved_tabs_table = document.getElementById("saved_tabs_table");
