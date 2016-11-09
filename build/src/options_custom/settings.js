@@ -4,6 +4,7 @@ window.addEvent("domready", function () {
         settings.manifest.myButton.addEvent("action", function () {
             alert("You clicked me!");
         });
+
     });
     
     // Option 2: Do everything manually:
