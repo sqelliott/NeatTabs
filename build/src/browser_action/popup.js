@@ -157,6 +157,7 @@ function save_tabs(tabs) {
             console.log("Save Success.");
         }
     };
+    create_saved_table();
 }
 
 // Clears local storage
