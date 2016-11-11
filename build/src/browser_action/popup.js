@@ -88,9 +88,9 @@ function create_current_table(tabs) {
         var favicon = document.createElement('img');
         console.log(tabs[i].favIconUrl);
         favicon.rel = 'shortcut icon';
-        favicon.src=tabs[i].favIconUrl;
+        favicon.src = tabs[i].favIconUrl;
         favicon.type = 'image/x-icon';
-        favicon.width="20";
+        favicon.width = "20";
         console.log(favicon);
 
         // Inserts created elements into the table in the HTML page
@@ -99,9 +99,9 @@ function create_current_table(tabs) {
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        cell1.appendChild(favicon);
-        cell2.innerHTML = String(i + 1) + ".";
-        cell3.appendChild(a);
+        cell3.appendChild(favicon);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
         cell4.appendChild(btn);
     }
 };
