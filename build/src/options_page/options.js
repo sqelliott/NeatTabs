@@ -1,4 +1,5 @@
 function save_options() {
+    create_saved_table();
     var color = document.getElementById('color').value;
     var likesColor = document.getElementById('like').checked;
     chrome.storage.sync.set({
@@ -78,9 +79,43 @@ function recent_callback(callback) {
     });
 }
 
+function create_saved_table() {
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+    console.log("here");
+    chrome.storage.sync.get("saved_tabs", function (items) {
+        console.log("lookhere");
+        console.log(items.saved_tabs);
+        for (var i = 0; i < items.saved_tabs.length; i++) {
+
+            // Creates table elements along with tooltips
+            var a = document.createElement('a');
+            a.href = items.saved_tabs[i].url;
+            a.appendChild(document.createTextNode(items.saved_tabs[i].title));
+            a.setAttribute("title", items.saved_tabs[i].title);
+            a.addEventListener('click', onAnchorClick);
+
+            // EDITS
+            //button to remove a tab from a save_tabs call
+            /*var btn = document.createElement('p');
+             btn.addEventListener("click",removeSaveTab);
+             var btnText = document.createTextNode('X');
+             btn.appendChild(btnText);*/
+
+            // Inserts created elements into the table in the HTML page
+            var row = saved_tabs_table.insertRow(i);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            // var cell3 = row.insertCell(2);
+            cell1.innerHTML = String(i + 1) + ".";
+            cell2.appendChild(a);
+            /*cell3.appendChild(btn);*/
+        }
+    });
+};
 
 function init() {
-    restore_options();
+    create_saved_table();
+    // restore_options();
     recent_callback(create_recent_table);
     document.getElementById('history').addEventListener('click', function() {
         chrome.tabs.update({ url: 'chrome://chrome/history' });
@@ -98,5 +133,7 @@ function init() {
         save_options);
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', restore_options);
+document.getElementById('save').addEventListener('click',
+    save_options);
 recent_callback(create_recent_table);

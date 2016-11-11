@@ -14,21 +14,6 @@ function session(name) {
 function init() {
     console.log("Starting Logging");
 
-    chrome.sessions.getRecentlyClosed(function (sessions) {
-        console.log(sessions);
-        var recentUrls = [];
-        sessions.forEach(function (session) {
-            if (session.window) {
-                session.window.tabs.forEach(function (tab) {
-                    recentUrls.push(tab.url);
-                });
-            } else {
-                recentUrls.push(session.tab.url);
-            }
-        });
-        console.log(recentUrls);
-    });
-
     chrome.windows.getCurrent(getWindows);
 
     return_callback(create_current_table);
@@ -85,7 +70,7 @@ function create_current_table(tabs) {
         // initial current_tabs_bitVector
         // to save all tabs
         current_tabs_bitVector[i] = 1;
-
+        console.log(tabs);
         // Creates table elements along with tooltips
         var a = document.createElement('a');
         a.href = tabs[i].url;
@@ -100,14 +85,24 @@ function create_current_table(tabs) {
         var btnText = document.createTextNode('Exclude');
         btn.appendChild(btnText);
 
+        var favicon = document.createElement('img');
+        console.log(tabs[i].favIconUrl);
+        favicon.rel = 'shortcut icon';
+        favicon.src=tabs[i].favIconUrl;
+        favicon.type = 'image/x-icon';
+        favicon.width="20";
+        console.log(favicon);
+
         // Inserts created elements into the table in the HTML page
         var row = current_tabs_table.insertRow(i);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
-        cell1.innerHTML = String(i + 1) + ".";
-        cell2.appendChild(a);
-        cell3.appendChild(btn);
+        var cell4 = row.insertCell(3);
+        cell1.appendChild(favicon);
+        cell2.innerHTML = String(i + 1) + ".";
+        cell3.appendChild(a);
+        cell4.appendChild(btn);
     }
 };
 
@@ -215,6 +210,9 @@ function clear_storage() {
 // Function to reopen all saved tabs in a new window
 function restore_tabs() {
     chrome.storage.local.get("saved_tabs", function (items) {
+        console.log(items);
+        console.log('ABOVETHIS');
+        items.forEa
         chrome.windows.create({focused: true, url: items.saved_tabs});
     });
 }
