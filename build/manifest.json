@@ -22,6 +22,7 @@
   "permissions": [
     "bookmarks",
     "history",
+    "sessions",
     "tabs",
     "storage",
     "downloads"

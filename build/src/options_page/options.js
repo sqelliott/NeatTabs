@@ -26,11 +26,62 @@ function restore_options() {
         document.getElementById('like').checked = items.likesColor;
     });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
+// document.addEventListener('DOMContentLoaded', restore_options);
+
+function start(tab) {
+    chrome.windows.getCurrent(getWindows);
+}
+
+function getWindows(win) {
+    targetWindow = win;
+    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
+}
+
+function getTabs(tabs) {
+    tabCount = tabs.length;
+    // We require all the tab information to be populated.
+    chrome.windows.getAll({"populate": true}, listTabs);
+}
+
+function listTabs(windows) {
+    var test_table = document.getElementById("test_table");
+
+    for (var i = 0; i < windows.length; i++) {
+        var table = document.createElement("table");
+        table.border = "1";
+
+        for (var j = 0; j < windows[i].tabs.length; j++) {
+            var tab = windows[i].tabs[j];
+
+            var a = document.createElement('a');
+            a.href = tab.url;
+            a.appendChild(document.createTextNode(tab.title));
+            a.setAttribute("title", tab.url);
+            a.addEventListener('click', onAnchorClick);
+
+            // Inserts created elements into the table in the HTML page
+            var row = test_table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = String(j + 1) + ".";
+            cell2.appendChild(a);
+            console.log(tab.url);
+        }
+
+        test_table.appendChild(table);
+    }
+}
+
+function recent_callback(callback) {
+    chrome.sessions.getRecentlyClosed(function (sessions) {
+        callback(sessions);
+    });
+}
 
 
 function init() {
     restore_options();
+    recent_callback(create_recent_table);
     document.getElementById('history').addEventListener('click', function() {
         chrome.tabs.update({ url: 'chrome://chrome/history' });
     });
@@ -48,3 +99,4 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+recent_callback(create_recent_table);
