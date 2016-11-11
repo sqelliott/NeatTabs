@@ -55,6 +55,8 @@ function init() {
     });
 }
 
+
+
 function create_current_table(tabs) {
     var current_tabs_table = document.getElementById("current_tabs_table");
     for (var i = 0; i < tabs.length; i++) {
