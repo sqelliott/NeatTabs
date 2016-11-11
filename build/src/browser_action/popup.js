@@ -26,7 +26,6 @@ function init() {
 
         saved_tabs_table.style.display = "";
         current_tabs_table.style.display = "none";
-
     });
 
     document.getElementById("save_menu").addEventListener("click", function () {
@@ -46,11 +45,11 @@ function init() {
         clear_storage();
     });
     document.getElementById("options_menu").addEventListener("click", function () {
-        console.log("Options Menu.");
-        chrome.tabs.create({url: "src/options_custom/index.html"});
+        console.log("Opening Options.");
+        chrome.tabs.create({url: "src/options_page/options.html"});
     });
     document.getElementById("export_menu").addEventListener("click", function () {
-        console.log("Options Menu.");
+        console.log("Exporting Session.");
         restore_callback(export_tabs);
     });
 }
@@ -70,8 +69,8 @@ function create_current_table(tabs) {
         a.addEventListener('click', onAnchorClick);
 
         //button to remove a tab from a save_tabs call
-        var btn = document.createElement('BUTTON');     
-        btn.addEventListener("click",excludeCurrentTab);
+        var btn = document.createElement('BUTTON');
+        btn.addEventListener("click", excludeCurrentTab);
         var btnText = document.createTextNode('Exclude');
         btn.appendChild(btnText);
 
@@ -103,9 +102,9 @@ function create_saved_table() {
             // EDITS
             //button to remove a tab from a save_tabs call
             /*var btn = document.createElement('p');     
-            btn.addEventListener("click",removeSaveTab);
-            var btnText = document.createTextNode('X');
-            btn.appendChild(btnText);*/
+             btn.addEventListener("click",removeSaveTab);
+             var btnText = document.createTextNode('X');
+             btn.appendChild(btnText);*/
 
             // Inserts created elements into the table in the HTML page
             var row = saved_tabs_table.insertRow(i);
@@ -142,10 +141,10 @@ function save_tabs(tabs) {
     // Keep in mind other limitations such as storage limit
     // Should we be using local storage per machine?
     // https://developer.chrome.com/extensions/storage#type-StorageArea
-    for (var i = 0, j =0; i < tabs.length; i++) {
-            if( current_tabs_bitVector[i]){
-                    saved_tabs[j++] = tabs[i].url;
-            }
+    for (var i = 0, j = 0; i < tabs.length; i++) {
+        if (current_tabs_bitVector[i]) {
+            saved_tabs[j++] = tabs[i].url;
+        }
     }
 
 
@@ -203,17 +202,17 @@ function excludeCurrentTab(event) {
     var row = event.srcElement.parentNode.parentNode;
     var rowInd = row.rowIndex;
 
-    if(current_tabs_bitVector[rowInd]==1){
+    if (current_tabs_bitVector[rowInd] == 1) {
         current_tabs_bitVector[rowInd] = 0;
         var btnText = document.createTextNode("Include");
         btn.appendChild(btnText);
-        console.log("exclude " +(rowInd+1)+" from current_tabs_table");
+        console.log("exclude " + (rowInd + 1) + " from current_tabs_table");
     }
-    else{
+    else {
         current_tabs_bitVector[rowInd] = 1;
         var btnText = document.createTextNode("Exclude");
         btn.appendChild(btnText);
-        console.log("Include " +(rowInd+1)+" from current_tabs_table");
+        console.log("Include " + (rowInd + 1) + " from current_tabs_table");
     }
 
 
@@ -228,74 +227,71 @@ function track_url(url, time) {
 }
 //get the current time
 function set_current_time() {
-    var now =  new Date();
+    var now = new Date();
     return now;
 
 }
 //check if track_tabs is empty.
 /*function get_track_tabs(){
-chrome.storage.local.get("track_tabs", function (items) {
-    if(items.track_tabs.length > 0){
+ chrome.storage.local.get("track_tabs", function (items) {
+ if(items.track_tabs.length > 0){
 
-        return false;
-    }
-   else {
-       return true;
-    }
-});
-}
-*/
+ return false;
+ }
+ else {
+ return true;
+ }
+ });
+ }
+ */
 
 //Enter current url to the the track_tabs array
 function track_tabs(current_url) {
-   console.log( "inside track_tabs: " + current_url.length);
+    console.log("inside track_tabs: " + current_url.length);
 
-    if (current_url.length>0){
+    if (current_url.length > 0) {
 
         var current_url_time = new track_url(current_url[1], set_current_time());
         console.log("added to local storage : " + current_url_time._url + current_url_time._time);
         // save the current url object into track_tabs
         chrome.storage.local.set({"track_tabs": current_url_time}), function () {
-          if (chrome.runtime.error) {
-            console.log("Runtime error.");
-          }
-         else {
-             console.log("Save to tracker Success.");
-         }
-      };
+            if (chrome.runtime.error) {
+                console.log("Runtime error.");
+            }
+            else {
+                console.log("Save to tracker Success.");
+            }
+        };
     }
 
     console.log("outside the loop");
-return false;
+    return false;
 }
 
-setTimeout(return_active_focus(),2000);
+setTimeout(return_active_focus(), 2000);
 
-function return_active_focus(){
-var current_url;
+function return_active_focus() {
+    var current_url;
     console.log("inside return_active_focus");
     var Regexp = /^(\w+:\/\/[^\/]+).*$/;
     //check whether the tabs are active in their windows
     // and whether the tabs are in the current window.
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function(current_tabs) {
+    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (current_tabs) {
         //it should only have one tab.
-        if (current_tabs.length == 1){
-             current_url = current_tabs[0].url.match(Regexp);
+        if (current_tabs.length == 1) {
+            current_url = current_tabs[0].url.match(Regexp);
 
             //Check if the window is focus.
             chrome.windows.get(current_tabs[0].windowId, function (window) {
-                if (!window.focused){
+                if (!window.focused) {
                     current_url = null;
                     console.log("Current active/focused: NULL ");
                 }
-                   // current_url;
-                     track_tabs( current_url);
-                    console.log("Current active/focused: "+ current_url[0]);
+                // current_url;
+                track_tabs(current_url);
+                console.log("Current active/focused: " + current_url[0]);
             });
         }
-
-
-
     });
 
 
@@ -303,28 +299,28 @@ var current_url;
 }
 
 /*function removeSaveTab(event){
-    var saved_tabs_table = document.getElementById("saved_tabs_table");
-    var row = event.srcElement.parentNode.parentNode;
-    var rowInd = row.rowIndex;
+ var saved_tabs_table = document.getElementById("saved_tabs_table");
+ var row = event.srcElement.parentNode.parentNode;
+ var rowInd = row.rowIndex;
 
-    chrome.storage.sync.get("saved_tabs", function (items) {
-        var saved_tabs = items.saved_tabs;
-        console.log(saved_tabs);
-        var new_saved_tabs =saved_tabs.slice(rowInd,rowInd+1);
-        console.log(new_saved_tabs);
+ chrome.storage.sync.get("saved_tabs", function (items) {
+ var saved_tabs = items.saved_tabs;
+ console.log(saved_tabs);
+ var new_saved_tabs =saved_tabs.slice(rowInd,rowInd+1);
+ console.log(new_saved_tabs);
 
-    });
+ });
 
-    chrome.storage.sync.set({"saved_tabs": new_saved_tabs}), function () {
-        if (chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        else {
-            console.log("Save Success.");
-        }
-    };
+ chrome.storage.sync.set({"saved_tabs": new_saved_tabs}), function () {
+ if (chrome.runtime.error) {
+ console.log("Runtime error.");
+ }
+ else {
+ console.log("Save Success.");
+ }
+ };
 
-}*/
+ }*/
 
 
 // Initialization routine
