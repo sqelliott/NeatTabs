@@ -1,16 +1,19 @@
 // Initialization function
 
-console = chrome.extension.getBackgroundPage().console;
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
+var targetWindow = null;
+var tabCount = 0;
 
 function init() {
     console.log("Starting Logging");
 
+    chrome.windows.getCurrent(getWindows);
+
     return_callback(create_current_table);
     create_saved_table();
 
-    document.getElementById("current_tabs").addEventListener("click", function () {
+    document.getElementById("current_tabs").addEventListener("click", function() {
         console.log("Showing Current Tabs.");
         var saved_table = document.getElementById("saved_tabs_table");
         var current_tabs_table = document.getElementById("current_tabs_table");
@@ -19,7 +22,7 @@ function init() {
         current_tabs_table.style.display = "";
     });
 
-    document.getElementById("saved_tabs").addEventListener("click", function () {
+    document.getElementById("saved_tabs").addEventListener("click", function() {
         console.log("Showing Saved Tabs.");
         var saved_tabs_table = document.getElementById("saved_tabs_table");
         var current_tabs_table = document.getElementById("current_tabs_table");
@@ -28,27 +31,27 @@ function init() {
         current_tabs_table.style.display = "none";
     });
 
-    document.getElementById("save_menu").addEventListener("click", function () {
+    document.getElementById("save_menu").addEventListener("click", function() {
         console.log("Saving Session.");
         return_callback(save_tabs);
     });
-    document.getElementById("track_menu").addEventListener("click", function () {
+    document.getElementById("track_menu").addEventListener("click", function() {
         console.log("Tracking Session.");
         return_callback(track_tabs);
     });
-    document.getElementById("restore_menu").addEventListener("click", function () {
+    document.getElementById("restore_menu").addEventListener("click", function() {
         console.log("Restoring Session.");
         restore_tabs();
     });
-    document.getElementById("clear_menu").addEventListener("click", function () {
+    document.getElementById("clear_menu").addEventListener("click", function() {
         console.log("Clearing Session.");
         clear_storage();
     });
-    document.getElementById("options_menu").addEventListener("click", function () {
+    document.getElementById("options_menu").addEventListener("click", function() {
         console.log("Opening Options.");
-        chrome.tabs.create({url: "src/options_page/options.html"});
+        chrome.tabs.create({ url: "src/options_page/options.html" });
     });
-    document.getElementById("export_menu").addEventListener("click", function () {
+    document.getElementById("export_menu").addEventListener("click", function() {
         console.log("Exporting Session.");
         restore_callback(export_tabs);
     });
@@ -88,7 +91,7 @@ function create_current_table(tabs) {
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    chrome.storage.local.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function(items) {
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
@@ -121,13 +124,13 @@ function create_saved_table() {
 // Callback function for returning URL object
 // https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
 function return_callback(callback) {
-    chrome.tabs.query({}, function (tabs) {
+    chrome.tabs.query({}, function(tabs) {
         callback(tabs);
     });
 };
 
 function restore_callback(callback) {
-    chrome.storage.local.get("saved_tabs", function (items) {
+    chrome.storage.local.get("saved_tabs", function(items) {
         callback(items);
     });
 }
@@ -148,14 +151,14 @@ function save_tabs(tabs) {
     }
 
 
-    chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
-        if (chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        else {
-            console.log("Save Success.");
-        }
-    };
+    chrome.storage.local.set({ "saved_tabs": saved_tabs }),
+        function() {
+            if (chrome.runtime.error) {
+                console.log("Runtime error.");
+            } else {
+                console.log("Save Success.");
+            }
+        };
 }
 
 // Clears local storage
@@ -165,8 +168,8 @@ function clear_storage() {
 
 // Function to reopen all saved tabs in a new window
 function restore_tabs() {
-    chrome.storage.local.get("saved_tabs", function (items) {
-        chrome.windows.create({focused: true, url: items.saved_tabs});
+    chrome.storage.local.get("saved_tabs", function(items) {
+        chrome.windows.create({ focused: true, url: items.saved_tabs });
     });
 }
 
@@ -186,7 +189,7 @@ function export_tabs(items) {
 // Event listener for clicks on links in a browser action popup.
 // Open the link in a new tab of the current window.
 function onAnchorClick(event) {
-    chrome.tabs.create({url: event.srcElement.href});
+    chrome.tabs.create({ url: event.srcElement.href });
     console.log(event.srcElement.toString());
     return false;
 }
@@ -207,8 +210,7 @@ function excludeCurrentTab(event) {
         var btnText = document.createTextNode("Include");
         btn.appendChild(btnText);
         console.log("exclude " + (rowInd + 1) + " from current_tabs_table");
-    }
-    else {
+    } else {
         current_tabs_bitVector[rowInd] = 1;
         var btnText = document.createTextNode("Exclude");
         btn.appendChild(btnText);
@@ -254,14 +256,14 @@ function track_tabs(current_url) {
         var current_url_time = new track_url(current_url[1], set_current_time());
         console.log("added to local storage : " + current_url_time._url + current_url_time._time);
         // save the current url object into track_tabs
-        chrome.storage.local.set({"track_tabs": current_url_time}), function () {
-            if (chrome.runtime.error) {
-                console.log("Runtime error.");
-            }
-            else {
-                console.log("Save to tracker Success.");
-            }
-        };
+        chrome.storage.local.set({ "track_tabs": current_url_time }),
+            function() {
+                if (chrome.runtime.error) {
+                    console.log("Runtime error.");
+                } else {
+                    console.log("Save to tracker Success.");
+                }
+            };
     }
 
     console.log("outside the loop");
@@ -276,13 +278,13 @@ function return_active_focus() {
     var Regexp = /^(\w+:\/\/[^\/]+).*$/;
     //check whether the tabs are active in their windows
     // and whether the tabs are in the current window.
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (current_tabs) {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(current_tabs) {
         //it should only have one tab.
         if (current_tabs.length == 1) {
             current_url = current_tabs[0].url.match(Regexp);
 
             //Check if the window is focus.
-            chrome.windows.get(current_tabs[0].windowId, function (window) {
+            chrome.windows.get(current_tabs[0].windowId, function(window) {
                 if (!window.focused) {
                     current_url = null;
                     console.log("Current active/focused: NULL ");
@@ -325,3 +327,72 @@ function return_active_focus() {
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
+
+function start(tab) {
+    chrome.windows.getCurrent(getWindows);
+}
+
+function getWindows(win) {
+    targetWindow = win;
+    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
+}
+
+function getTabs(tabs) {
+    tabCount = tabs.length;
+    // We require all the tab information to be populated.
+    chrome.windows.getAll({ "populate": true }, listTabs);
+}
+
+function listTabs(windows) {
+    var numWindows = windows.length;
+    var tabPosition = tabCount;
+
+    for (var i = 0; i < numWindows; i++) {
+        var win = windows[i];
+        console.log(win);
+        var current_tabs_table = document.getElementById("test_table");
+        var numTabs = win.tabs.length;
+
+        for (var j = 0; j < numTabs; j++) {
+            var tab = win.tabs[j];
+
+            var table = document.createElement("TABLE");
+            table.border = "1";
+            var columnCount = numTabs;
+
+            var row = table.insertRow(-1);
+            for (var i = 0; i < columnCount; i++) {
+                var headerCell = document.createElement("TH");
+                headerCell.innerHTML = "header";
+                row.appendChild(headerCell);
+            }
+
+            for (var i = 1; i < numTabs; i++) {
+                row = table.insertRow(-1);
+                for (var j = 0; j < columnCount; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.innerHTML = tab.url;
+                }
+            }
+
+            var a = document.createElement('a');
+            a.href = tab.url;
+            a.appendChild(document.createTextNode(tab.title));
+            a.setAttribute("title", tab.url);
+            a.addEventListener('click', onAnchorClick);
+
+            // Inserts created elements into the table in the HTML page
+            var row = current_tabs_table.insertRow(i);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = String(i + 1) + ".";
+            cell2.appendChild(a);
+            console.log(tab.url);
+            tabPosition++;
+        }
+        console.log("NEW WINDOW HERE");
+        current_tabs_table.appendChild(table);
+    }
+}
+
+chrome.browserAction.onClicked.addListener(init);
