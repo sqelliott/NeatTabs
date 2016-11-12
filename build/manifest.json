@@ -25,6 +25,8 @@
     "history",
     "tabs",
     "storage",
-    "downloads"
+    "downloads",
+    "alarms",
+    "idle"
   ]
 }
