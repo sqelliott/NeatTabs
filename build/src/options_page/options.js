@@ -79,6 +79,33 @@ function recent_callback(callback) {
     });
 }
 
+function create_recent_table(sessions) {
+    var recent_tabs_table = document.getElementById("recent_tabs_table");
+
+    sessions.forEach(function (session, i) {
+        var a = document.createElement('a');
+        if (session.window) {
+            session.window.tabs.forEach(function (tab) {
+                a.href = tab.url;
+                a.appendChild(document.createTextNode(tab.title));
+                a.setAttribute("title", tab.url);
+                a.addEventListener('click', onAnchorClick);
+                console.log(a);
+            });
+        } else {
+            a.href = session.tab.url;
+            a.appendChild(document.createTextNode(session.tab.title));
+            a.setAttribute("title", session.tab.title);
+            a.addEventListener('click', onAnchorClick);
+        }
+        var row = recent_tabs_table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
+    });
+}
+
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
     console.log("here");
@@ -114,6 +141,7 @@ function create_saved_table() {
 };
 
 function init() {
+    console.log("options");
     create_saved_table();
     // restore_options();
     recent_callback(create_recent_table);
@@ -133,7 +161,8 @@ function init() {
         save_options);
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-    save_options);
+console.log("OPTIONS");
+// document.addEventListener('DOMContentLoaded', init);
+// document.getElementById('save').addEventListener('click',
+//     save_options);
 recent_callback(create_recent_table);

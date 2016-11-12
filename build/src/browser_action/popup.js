@@ -70,7 +70,7 @@ function create_current_table(tabs) {
         // initial current_tabs_bitVector
         // to save all tabs
         current_tabs_bitVector[i] = 1;
-        console.log(tabs);
+        // console.log(tabs);
         // Creates table elements along with tooltips
         var a = document.createElement('a');
         a.href = tabs[i].url;
@@ -86,12 +86,10 @@ function create_current_table(tabs) {
         btn.appendChild(btnText);
 
         var favicon = document.createElement('img');
-        console.log(tabs[i].favIconUrl);
         favicon.rel = 'shortcut icon';
         favicon.src = tabs[i].favIconUrl;
         favicon.type = 'image/x-icon';
         favicon.width = "20";
-        console.log(favicon);
 
         // Inserts created elements into the table in the HTML page
         var row = current_tabs_table.insertRow(i);
@@ -110,7 +108,7 @@ function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
     chrome.storage.local.get("saved_tabs", function (items) {
-        console.log("lookhere");
+        console.log("saved table");
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
@@ -211,8 +209,7 @@ function clear_storage() {
 function restore_tabs() {
     chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items);
-        console.log('ABOVETHIS');
-        items.forEa
+        console.log('restore tabs');
         chrome.windows.create({focused: true, url: items.saved_tabs});
     });
 }
@@ -403,7 +400,7 @@ function listTabs(windows) {
             var cell2 = row.insertCell(1);
             cell1.innerHTML = String(j + 1) + ".";
             cell2.appendChild(a);
-            console.log(tab.url);
+            // console.log(tab.url);
         }
 
         test_table.appendChild(table);

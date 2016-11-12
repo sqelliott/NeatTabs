@@ -10,7 +10,7 @@
     "128": "icons/icon128.png"
   },
   "background": {
-    "page": "src/background/background.html",
+    "page": "src/background/background.js",
     "persistent": true
   },
   "options_page": "src/options_page/options.html",
