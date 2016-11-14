@@ -89,6 +89,7 @@ function create_current_table(tabs) {
 
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
+    destroy_saved_table();
 
     chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items.saved_tabs);
@@ -175,6 +176,7 @@ function save_tabs(tabs) {
 function clear_storage() {
     chrome.storage.local.clear();
     console.log("storage cleared");
+    destroy_saved_table();
 }
 
 // Function to reopen all saved tabs in a new window
@@ -339,6 +341,7 @@ function removeSaveTab(event){
 
         if( items.saved_tabs.length == 0){
             console.log ("session has no tabs");
+            // based on code of 1 session saved
             clear_storage();
         }
         else{
@@ -347,18 +350,20 @@ function removeSaveTab(event){
             chrome.storage.local.set({"saved_tabs": items.saved_tabs}, function () {
                 if (chrome.runtime.error) {
                     console.log("Runtime error.");
+    
                 }
                 else {
                     console.log("Save Success.");
+                    console.log("old saved_tabs_table removed");
+                    destroy_saved_table();
+                    create_saved_table();                    
                 }
             });
         }
     });
 
 
-    console.log("old saved_tabs_table removed");
-    destroy_saved_table();
-    create_saved_table();
+
 
 }
 
