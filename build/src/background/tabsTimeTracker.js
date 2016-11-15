@@ -2,29 +2,27 @@
 console.log("hello");
 //Object to save the url and time/start time
 //setTimeout(TabsTimeTracker,1000);
-var tabs = new TabsTimeTracker();
-function TabsTimeTracker() {
-    this._url = null;
+
+var current_tab = new Timer();
+
+
+function Timer() {
+    this._tabs = null;
     this._startTime = null;
     this._time = 0;
+
     var self = this;
     var idle = null;
 
 
-//get the current time
-// TabsTimeTracker.prototype.set_current_time = function (){
-    //      var now = new Date();
-    //    return now;
-    //}
 
-    //Fired when a tab is updated.
+    //Fired when a tab is updated or when a new tab is created.
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             //check if the url if still the current focus.
-            console.log("onUpdated"+ tab.url);
-            console.log("Updating Time");
-            //  self._updateCurrentFocusTab();
+             self._updateCurrentFocusTab();
         }
     );
+
 
     //Fires when the active tab in a window changes. Note that the tab's
     // URL may not be set at the time this event fired, but you can listen
@@ -32,9 +30,8 @@ function TabsTimeTracker() {
     chrome.tabs.onActivated.addListener(
         function (activeInfo) {
             chrome.tabs.get(activeInfo.tabId, function (tab) {
-                console.log("onActivated");
-                console.log("Updating Time"+ tab.url);
-                //      self._updateCurrentFocusTab();
+
+                self._setCurrent(tab.url);
             });
         }
     );
@@ -44,13 +41,10 @@ function TabsTimeTracker() {
     chrome.windows.onFocusChanged.addListener(
         function (windowId) {
             if (windowId == chrome.windows.WINDOW_ID_NONE) {
-                console.log("Current Focus null")
-                //self._setCurrentFocus(null);
+                self._setCurrent(null);
                 return;
             }
-            console.log("onFocusChange");
-            console.log("Updating time");
-            // self._updateCurrentFocusTab();
+             self._updateCurrentFocusTab();
         }
     );
 
@@ -59,76 +53,108 @@ function TabsTimeTracker() {
     // screensaver activates, "idle" if the system is unlocked and the
     // user has not generated any input for a specified number of seconds,
     // and "active" when the user generates input on an idle system.
-    /*
      chrome.idle.onStateChanged.addListener(function (idleState) {
+        if (idleState == "active") {
+            idle = false;
 
-     if (idleState == "active") {
-     idle = false;
-     console.log("onStateChange");
-     //self._updateCurrentFocusTab();
-     } else {
-     idle = true;
-
-     console.log("CurrentFocus null");
-     console.log("Updating time");
-     //self._setCurrentFocus(null);
-     }
+             self._updateCurrentFocusTab();
+         } else {
+            idle = true;
+            self._setCurrent(null);
+        }
      });
-     */
+
+    //Alarm to check when the page goes idle.
     chrome.alarms.create("updateTime", {periodInMinutes: 1});
-    console.log("Inside Alarm");
     chrome.alarms.onAlarm.addListener(function (alarm) {
         if (alarm.name == "updateTime") {
 
             if (!idle) {
-                console.log("Update Current Focus time");
-                console.log("Updating time");
-                //  self._updateCurrentFocusTab();
+                  self._updateCurrentFocusTab();
             }
-            // Force a check of the idle state to ensure that we transition
-            // back from idle to active as soon as possible.
+
+            // The system is considered idle if detectionIntervalInSeconds
+            // seconds have elapsed since the last user input detected.
             chrome.idle.queryState(60, function (idleState) {
                 if (idleState == "active") {
                     idle = false;
                 } else {
                     idle = true;
-                    console.log("Current Focus = null")
-                    //self._setCurrentFocus(null);
+                   self._setCurrent(null);
                 }
             });
         }
     });
+}
+
+Timer.prototype._addTime = function () {
+    var self = this;
+    if (!self._tabs || !self._startTime){
+        return;
+    }
+    var now = new Date();
+    var addTime = now - self._startTime;
+    self._startTime = now;
+
+    self._time = self._time + addTime;
+    console.log("Adding = "+self._time/6000);
+
+    //TODO:add save function
+    return false;
+
 
 }
 
 
+Timer.prototype._setCurrent = function (tabs) {
 
-TabsTimeTracker.prototype._updateCurrentFocusTab = function () {
     var self = this;
-    //console.log("inside return_active_focus");
-    //  var Regexp = /^(\w+:\/\/[^\/]+).*$/;
+    console.log("tab: "+ tabs);
+    self._addTime();
+    if (tabs == null ){
+
+        self._tabs = null;
+        self._time = 0;
+        console.log("in Null "+ self._time);
+        self._startTime = null;
+    }
+    else {
+        self._tabs = tabs;
+        self._startTime = new Date();
+
+    }
+
+    console.log("setCurrent: " + self._tabs);
+    return false;
+}
+
+
+
+Timer.prototype._updateCurrentFocusTab = function () {
+   var self = this;
+
+    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
     //check whether the tabs are active in their windows
     // and whether the tabs are in the current window.
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
         //it should only have one tab.
         if (tabs.length == 1) {
 
-            self._url = tabs[0].url.match(Regexp);
-            console.log("before windows.get : " + url[0])
+                //Check if the window is focus.
+                chrome.windows.get(tabs[0].windowId, function (window) {
 
-            //Check if the window is focus.
-            chrome.windows.get(tabs[0].windowId, function (window) {
-                console.log(window.focused);
-                if (!window.focused) {
-                    self._url = null;
-                    console.log("Current active/focused: NULL ");
-                }
-                // current_url;
-                //set_active_focus(self._url);
-                console.log("Current active/focused: " + url[0]);
-            });
-        }
+                    if (!window.focused) {
+                        self._setCurrent(null);
+                    }
+                    var url = tabs[0].url.match(Regexp);
+
+                      self._setCurrent(url);
+
+                });
+            }
+
     });
+
     return false;
 };
 
