@@ -47,7 +47,7 @@ function init() {
     });
     document.getElementById("options_menu").addEventListener("click", function () {
         console.log("Options Menu.");
-        chrome.tabs.create({url: "src/options_custom/index.html"});
+        chrome.tabs.create({url: "src/options_page/options.html"});
     });
     document.getElementById("export_menu").addEventListener("click", function () {
         console.log("Options Menu.");
