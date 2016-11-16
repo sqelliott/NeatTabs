@@ -31,7 +31,7 @@ function Timer() {
         function (activeInfo) {
             chrome.tabs.get(activeInfo.tabId, function (tab) {
 
-                self._setCurrent(tab.url);
+                self._setCurrent(tab.urlgit );
             });
         }
     );
