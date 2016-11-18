@@ -119,6 +119,14 @@ function create_saved_table() {
             a.setAttribute("title", items.saved_tabs[i].title);
             a.addEventListener('click', onAnchorClick);
 
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            console.log(items);
+            favicon.src = items.saved_tabs[i].favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
+
             // EDITS
             //button to remove a tab from a save_tabs call
             /*var btn = document.createElement('p');     
@@ -130,9 +138,11 @@ function create_saved_table() {
             var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             // var cell3 = row.insertCell(2);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
+            cell3.appendChild(favicon);
             /*cell3.appendChild(btn);*/
         }
     });
