@@ -119,9 +119,17 @@ function create_saved_table() {
             a.setAttribute("title", items.saved_tabs[i].title);
             a.addEventListener('click', onAnchorClick);
 
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            console.log(items);
+            favicon.src = items.saved_tabs[i].favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
+
             // EDITS
             //button to remove a tab from a save_tabs call
-            /*var btn = document.createElement('p');     
+            /*var btn = document.createElement('p');
              btn.addEventListener("click",removeSaveTab);
              var btnText = document.createTextNode('X');
              btn.appendChild(btnText);*/
@@ -130,9 +138,11 @@ function create_saved_table() {
             var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             // var cell3 = row.insertCell(2);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
+            cell3.appendChild(favicon);
             /*cell3.appendChild(btn);*/
         }
     });
@@ -150,6 +160,12 @@ function create_recent_table(sessions) {
                 a.setAttribute("title", tab.url);
                 a.addEventListener('click', onAnchorClick);
                 console.log(a);
+
+                var favicon = document.createElement('img');
+                favicon.rel = 'shortcut icon';
+                favicon.src = tab.favIconUrl;
+                favicon.type = 'image/x-icon';
+                favicon.width = "20";
             });
         } else {
             a.href = session.tab.url;
@@ -160,8 +176,10 @@ function create_recent_table(sessions) {
         var row = recent_tabs_table.insertRow(i);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
         cell1.innerHTML = String(i + 1) + ".";
         cell2.appendChild(a);
+        cell3.appendChild(favicon);
     });
 }
 
@@ -394,12 +412,20 @@ function listTabs(windows) {
             a.setAttribute("title", tab.url);
             a.addEventListener('click', onAnchorClick);
 
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            favicon.src = tab.favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
             // Inserts created elements into the table in the HTML page
             var row = test_table.insertRow(-1);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             cell1.innerHTML = String(j + 1) + ".";
             cell2.appendChild(a);
+            cell3.appendChild(favicon);
             // console.log(tab.url);
         }
 
