@@ -55,8 +55,10 @@ function init() {
         clear_storage();
     });
     document.getElementById("options_menu").addEventListener("click", function () {
+
         console.log("Opening Options.");
         chrome.tabs.create({url: "src/options_page/options.html"});
+
     });
     document.getElementById("export_menu").addEventListener("click", function () {
         console.log("Exporting Session.");
@@ -218,6 +220,13 @@ function recent_callback(callback) {
 function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
+    var saved_tabs = new Array();
+    for ( var i=0, j=0; i < tabs.length; i++){
+        if(current_tabs_bitVector[i]){
+            saved_tabs[j] = tabs[i];
+            j++;
+        }
+    }
 
     chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
         if (chrome.runtime.error) {
