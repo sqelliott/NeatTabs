@@ -1,9 +1,70 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <title>Options - NeatTabs</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/options.css"/>
+    <link rel="stylesheet" type="text/css" href="../../styles/options-widgets.css"/>
+    <link rel="stylesheet" type="text/css" href="../../styles/options-mac.css"/>
+    <script type="text/javascript" src="../../scripts/options-setup.js"></script>
     <script type="text/javascript" src="options.js"></script>
 </head>
+
 <body>
+<nav class="sideBar">
+    <h1>Chrome</h1>
+    <ul>
+        <li><a href="chrome://history" id="history">History</a></li>
+        <li>
+            <a href="chrome://extensions" id="extensions">Extensions</a>
+            <ul>
+                <li>NeatTabs</li>
+            </ul>
+        </li>
+        <li><a href="chrome://settings" id="settings">Settings</a></li>
+        <li><a href="chrome://about" id="about">About</a></li>
+    </ul>
+</nav>
+<header>
+    <!-- Replace this with your extension's title. -->
+    <h1>NeatTabs</h1>
+
+</header>
+<!-- Replace everything below this point with your extension's options. -->
+<!--<section>-->
+<!--<h3>Multiple choice</h3>-->
+<!--<p>This is a multiple choice question using radio buttons:</p>-->
+<!--<label for="radio1">-->
+<!--<input type="radio" name="radio" id="radio1" checked="checked" /> First choice-->
+<!--</label>-->
+<!--<br/>-->
+<!--<label for="radio2">-->
+<!--<input type="radio" name="radio" id="radio2" /> Second choice-->
+<!--</label>-->
+<!--<br/>-->
+<!--<label for="radio3">-->
+<!--<input type="radio" name="radio" id="radio3" /> Third choice-->
+<!--</label>-->
+<!--<br/>-->
+<!--<label for="rad4o4">-->
+<!--<input type="radio" name="radio" id="radio4" /> Fourth choice-->
+<!--</label>-->
+<!--</section>-->
+
+<!--set-->
+Favorite color:
+<select id="color">
+    <option value="red">red</option>
+    <option value="green">green</option>
+    <option value="blue">blue</option>
+    <option value="yellow">yellow</option>
+</select>
+<label>
+    <input type="checkbox" id="like"> I like colors.
+</label>
+<div id="status"></div>
+<button id="save">Save</button>
 
 </body>
+
 </html>

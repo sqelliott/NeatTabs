@@ -1,13 +1,23 @@
 // Initialization function
 
-console = chrome.extension.getBackgroundPage().console;
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
+
+function session(name) {
+    this.name = name;
+    this.urls = [];
+    this.icon = [];
+    this.title = [];
+    this.time = 0;
+}
 
 function init() {
     console.log("Starting Logging");
 
+    chrome.windows.getCurrent(getWindows);
+
     return_callback(create_current_table);
+    recent_callback(create_recent_table);
     create_saved_table();
 
     document.getElementById("current_tabs").addEventListener("click", function () {
@@ -26,7 +36,6 @@ function init() {
 
         saved_tabs_table.style.display = "";
         current_tabs_table.style.display = "none";
-
     });
 
     document.getElementById("save_menu").addEventListener("click", function () {
@@ -46,11 +55,13 @@ function init() {
         clear_storage();
     });
     document.getElementById("options_menu").addEventListener("click", function () {
-        console.log("Options Menu.");
-        chrome.tabs.create({url: "src/options_custom/index.html"});
+
+        console.log("Opening Options.");
+        chrome.tabs.create({url: "src/options_page/options.html"});
+
     });
     document.getElementById("export_menu").addEventListener("click", function () {
-        console.log("Options Menu.");
+        console.log("Exporting Session.");
         restore_callback(export_tabs);
     });
 }
@@ -63,7 +74,7 @@ function create_current_table(tabs) {
         // initial current_tabs_bitVector
         // to save all tabs
         current_tabs_bitVector[i] = 1;
-
+        // console.log(tabs);
         // Creates table elements along with tooltips
         var a = document.createElement('a');
         a.href = tabs[i].url;
@@ -72,21 +83,33 @@ function create_current_table(tabs) {
         a.addEventListener('click', onAnchorClick);
 
         //button to exclude a tab from a save_tabs call
-        var btn = document.createElement('BUTTON');     
-        btn.addEventListener("click",excludeCurrentTab);
+        var btn = document.createElement('BUTTON');
+        btn.addEventListener("click", excludeCurrentTab);
         btn.className = "btn btn-primary btn-sm";
+
         var btnText = document.createTextNode('Exclude');
         btn.appendChild(btnText);
+
+        var favicon = document.createElement('img');
+        favicon.rel = 'shortcut icon';
+        favicon.src = tabs[i].favIconUrl;
+        favicon.type = 'image/x-icon';
+        favicon.width = "20";
 
         // Inserts created elements into the table in the HTML page
         var row = current_tabs_table.insertRow(i);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
+<<<<<<< HEAD
 
+=======
+        var cell4 = row.insertCell(3);
+        cell3.appendChild(favicon);
+>>>>>>> d497ceb1f391420a3a6dd98f2fe61c792a47010c
         cell1.innerHTML = String(i + 1) + ".";
         cell2.appendChild(a);
-        cell3.appendChild(btn);
+        cell4.appendChild(btn);
     }
 };
 
@@ -95,19 +118,27 @@ function create_saved_table() {
     destroy_saved_table();
 
     chrome.storage.local.get("saved_tabs", function (items) {
+        console.log("saved table");
         console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
             // Creates table elements along with tooltips
             var a = document.createElement('a');
-            a.href = items.saved_tabs[i];
-            a.appendChild(document.createTextNode(items.saved_tabs[i]));
-            a.setAttribute("title", items.saved_tabs[i]);
+            a.href = items.saved_tabs[i].url;
+            a.appendChild(document.createTextNode(items.saved_tabs[i].title));
+            a.setAttribute("title", items.saved_tabs[i].title);
             a.addEventListener('click', onAnchorClick);
 
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            console.log(items);
+            favicon.src = items.saved_tabs[i].favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
             //button to exclude a tab from a save_tabs call
-            var btn = document.createElement('BUTTON');     
-            btn.addEventListener("click",removeSaveTab);
+            var btn = document.createElement('BUTTON');
+            btn.addEventListener("click", removeSaveTab);
             btn.className = "btn btn-primary btn-sm";
             var btnText = document.createTextNode('Remove');
             btn.appendChild(btnText);
@@ -117,22 +148,59 @@ function create_saved_table() {
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
-            cell3.appendChild(btn);
+            cell3.appendChild(favicon);
+            cell4.appendChild(btn);
         }
     });
 };
 
-function destroy_saved_table(){
+function create_recent_table(sessions) {
+    var recent_tabs_table = document.getElementById("recent_tabs_table");
+
+    sessions.forEach(function (session, i) {
+        var a = document.createElement('a');
+        if (session.window) {
+            session.window.tabs.forEach(function (tab) {
+                a.href = tab.url;
+                a.appendChild(document.createTextNode(tab.title));
+                a.setAttribute("title", tab.url);
+                a.addEventListener('click', onAnchorClick);
+                console.log(a);
+
+                var favicon = document.createElement('img');
+                favicon.rel = 'shortcut icon';
+                favicon.src = tab.favIconUrl;
+                favicon.type = 'image/x-icon';
+                favicon.width = "20";
+            });
+        } else {
+            a.href = session.tab.url;
+            a.appendChild(document.createTextNode(session.tab.title));
+            a.setAttribute("title", session.tab.title);
+            a.addEventListener('click', onAnchorClick);
+        }
+        var row = recent_tabs_table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
+        cell3.appendChild(favicon);
+    });
+};
+
+function destroy_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    while (saved_tabs_table.rows.length > 0){
+    while (saved_tabs_table.rows.length > 0) {
         saved_tabs_table.deleteRow(0);
     }
     console.log("saved_table destroyed");
-
 }
+
 
 // Callback function for returning URL object
 // https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
@@ -148,21 +216,23 @@ function restore_callback(callback) {
     });
 }
 
+function recent_callback(callback) {
+    chrome.sessions.getRecentlyClosed(function (sessions) {
+        callback(sessions);
+    });
+}
+
 // Saves only tab urls
 function save_tabs(tabs) {
-    var saved_tabs = new Array();
+    console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
-
-    // Only saving URLs instead of all metadata attributes as to stay under the 8KB limit
-    // Keep in mind other limitations such as storage limit
-    // Should we be using local storage per machine?
-    // https://developer.chrome.com/extensions/storage#type-StorageArea
-    for (var i = 0, j =0; i < tabs.length; i++) {
-            if( current_tabs_bitVector[i]){
-                    saved_tabs[j++] = tabs[i].url;
-            }
+    var saved_tabs = new Array();
+    for ( var i=0, j=0; i < tabs.length; i++){
+        if(current_tabs_bitVector[i]){
+            saved_tabs[j] = tabs[i];
+            j++;
+        }
     }
-
 
     chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
         if (chrome.runtime.error) {
@@ -185,6 +255,8 @@ function clear_storage() {
 // Function to reopen all saved tabs in a new window
 function restore_tabs() {
     chrome.storage.local.get("saved_tabs", function (items) {
+        console.log(items);
+        console.log('restore tabs');
         chrome.windows.create({focused: true, url: items.saved_tabs});
     });
 }
@@ -221,27 +293,25 @@ function excludeCurrentTab(event) {
     var row = event.srcElement.parentNode.parentNode;
     var rowInd = row.rowIndex;
 
-    if(current_tabs_bitVector[rowInd]==1){
+    if (current_tabs_bitVector[rowInd] == 1) {
         current_tabs_bitVector[rowInd] = 0;
         var btnText = document.createTextNode("Include");
         btn.appendChild(btnText);
         btn.className = "btn btn-danger btn-sm";
-        console.log("exclude " +(rowInd+1)+" from current_tabs_table");
+        console.log("exclude " + (rowInd + 1) + " from current_tabs_table");
     }
-    else{
+    else {
         current_tabs_bitVector[rowInd] = 1;
         var btnText = document.createTextNode("Exclude");
         btn.appendChild(btnText);
         btn.className = "btn btn-primary btn-sm";
-        console.log("Include " +(rowInd+1)+" from current_tabs_table");
+        console.log("Include " + (rowInd + 1) + " from current_tabs_table");
     }
-
-
 }
 
 
 
-function removeSaveTab(event){
+function removeSaveTab(event) {
 
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
@@ -255,39 +325,83 @@ function removeSaveTab(event){
     var rowInd = row.rowIndex;
 
 
-    chrome.storage.local.get("saved_tabs", function(items) {
-        items.saved_tabs.splice (rowInd,1);
+    chrome.storage.local.get("saved_tabs", function (items) {
+        items.saved_tabs.splice(rowInd, 1);
 
         console.log("updated saved_tabs");
         console.log(items.saved_tabs);
 
-        if( items.saved_tabs.length == 0){
-            console.log ("session has no tabs");
+        if (items.saved_tabs.length == 0) {
+            console.log("session has no tabs");
             // based on code of 1 session saved
             clear_storage();
-        }
-        else{
-
-
+        } else {
             chrome.storage.local.set({"saved_tabs": items.saved_tabs}, function () {
                 if (chrome.runtime.error) {
                     console.log("Runtime error.");
-    
                 }
                 else {
                     console.log("Save Success.");
                     console.log("old saved_tabs_table removed");
                     destroy_saved_table();
-                    create_saved_table();                    
+                    create_saved_table();
                 }
             });
         }
     });
-
-
-
-
 }
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
+
+function start(tab) {
+    chrome.windows.getCurrent(getWindows);
+}
+
+function getWindows(win) {
+    targetWindow = win;
+    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
+}
+
+function getTabs(tabs) {
+    tabCount = tabs.length;
+    // We require all the tab information to be populated.
+    chrome.windows.getAll({"populate": true}, listTabs);
+}
+
+function listTabs(windows) {
+    var test_table = document.getElementById("test_table");
+
+    for (var i = 0; i < windows.length; i++) {
+        var table = document.createElement("table");
+        for (var j = 0; j < windows[i].tabs.length; j++) {
+            var tab = windows[i].tabs[j];
+
+            var a = document.createElement('a');
+            a.href = tab.url;
+            a.appendChild(document.createTextNode(tab.title));
+            a.setAttribute("title", tab.url);
+            a.addEventListener('click', onAnchorClick);
+
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            favicon.src = tab.favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
+            // Inserts created elements into the table in the HTML page
+            var row = test_table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            cell1.innerHTML = String(j + 1) + ".";
+            cell2.appendChild(a);
+            cell3.appendChild(favicon);
+            // console.log(tab.url);
+        }
+
+        test_table.appendChild(table);
+    }
+}
+
+chrome.browserAction.onClicked.addListener(init);
