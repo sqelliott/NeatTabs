@@ -78,10 +78,11 @@ function create_current_table(tabs) {
         a.setAttribute("title", tabs[i].url);
         a.addEventListener('click', onAnchorClick);
 
-        //button to remove a tab from a save_tabs call
+        //button to exclude a tab from a save_tabs call
         var btn = document.createElement('BUTTON');
-        btn.className = "btn btn-primary btn-sm";
         btn.addEventListener("click", excludeCurrentTab);
+        btn.className = "btn btn-primary btn-sm";
+
         var btnText = document.createTextNode('Exclude');
         btn.appendChild(btnText);
 
@@ -106,6 +107,7 @@ function create_current_table(tabs) {
 
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
+    destroy_saved_table();
 
     chrome.storage.local.get("saved_tabs", function (items) {
         console.log("saved table");
@@ -126,24 +128,23 @@ function create_saved_table() {
             favicon.type = 'image/x-icon';
             favicon.width = "20";
 
-
-            // EDITS
-            //button to remove a tab from a save_tabs call
-            /*var btn = document.createElement('p');
-             btn.addEventListener("click",removeSaveTab);
-             var btnText = document.createTextNode('X');
-             btn.appendChild(btnText);*/
+            //button to exclude a tab from a save_tabs call
+            var btn = document.createElement('BUTTON');
+            btn.addEventListener("click", removeSaveTab);
+            btn.className = "btn btn-primary btn-sm";
+            var btnText = document.createTextNode('Remove');
+            btn.appendChild(btnText);
 
             // Inserts created elements into the table in the HTML page
             var row = saved_tabs_table.insertRow(i);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
-            // var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
             cell3.appendChild(favicon);
-            /*cell3.appendChild(btn);*/
+            cell4.appendChild(btn);
         }
     });
 };
@@ -181,7 +182,17 @@ function create_recent_table(sessions) {
         cell2.appendChild(a);
         cell3.appendChild(favicon);
     });
+};
+
+function destroy_saved_table() {
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+
+    while (saved_tabs_table.rows.length > 0) {
+        saved_tabs_table.deleteRow(0);
+    }
+    console.log("saved_table destroyed");
 }
+
 
 // Callback function for returning URL object
 // https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
@@ -208,19 +219,22 @@ function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
 
-    chrome.storage.local.set({"saved_tabs": tabs}),
-        function () {
-            if (chrome.runtime.error) {
-                console.log("Runtime error.");
-            } else {
-                console.log("Save Success.");
-            }
-        };
+    chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Save Success.");
+        }
+    };
+    create_saved_table();
 }
 
 // Clears local storage
 function clear_storage() {
     chrome.storage.local.clear();
+    console.log("storage cleared");
+    destroy_saved_table();
 }
 
 // Function to reopen all saved tabs in a new window
@@ -268,11 +282,14 @@ function excludeCurrentTab(event) {
         current_tabs_bitVector[rowInd] = 0;
         var btnText = document.createTextNode("Include");
         btn.appendChild(btnText);
+        btn.className = "btn btn-danger btn-sm";
         console.log("exclude " + (rowInd + 1) + " from current_tabs_table");
-    } else {
+    }
+    else {
         current_tabs_bitVector[rowInd] = 1;
         var btnText = document.createTextNode("Exclude");
         btn.appendChild(btnText);
+        btn.className = "btn btn-primary btn-sm";
         console.log("Include " + (rowInd + 1) + " from current_tabs_table");
     }
 }
@@ -355,30 +372,45 @@ function return_active_focus() {
     return false;
 }
 
-/*function removeSaveTab(event){
- var saved_tabs_table = document.getElementById("saved_tabs_table");
- var row = event.srcElement.parentNode.parentNode;
- var rowInd = row.rowIndex;
+function removeSaveTab(event) {
 
- chrome.storage.sync.get("saved_tabs", function (items) {
- var saved_tabs = items.saved_tabs;
- console.log(saved_tabs);
- var new_saved_tabs =saved_tabs.slice(rowInd,rowInd+1);
- console.log(new_saved_tabs);
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
 
- });
+    // get the button that sevent event listener to remove
+    // tabs
+    var btn = event.srcElement
 
- chrome.storage.sync.set({"saved_tabs": new_saved_tabs}), function () {
- if (chrome.runtime.error) {
- console.log("Runtime error.");
- }
- else {
- console.log("Save Success.");
- }
- };
+    //get the row of the button
+    // identify the row number of the button's row
+    var row = btn.parentNode.parentNode;
+    var rowInd = row.rowIndex;
 
- }*/
 
+    chrome.storage.local.get("saved_tabs", function (items) {
+        items.saved_tabs.splice(rowInd, 1);
+
+        console.log("updated saved_tabs");
+        console.log(items.saved_tabs);
+
+        if (items.saved_tabs.length == 0) {
+            console.log("session has no tabs");
+            // based on code of 1 session saved
+            clear_storage();
+        } else {
+            chrome.storage.local.set({"saved_tabs": items.saved_tabs}, function () {
+                if (chrome.runtime.error) {
+                    console.log("Runtime error.");
+                }
+                else {
+                    console.log("Save Success.");
+                    console.log("old saved_tabs_table removed");
+                    destroy_saved_table();
+                    create_saved_table();
+                }
+            });
+        }
+    });
+}
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
