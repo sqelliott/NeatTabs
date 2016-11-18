@@ -101,6 +101,7 @@ Timer.prototype._addTime = function () {
     var now = new Date();
     var addTime = now - self._startTime;
     self._startTime = now;
+
     self._time = self._time + addTime + self._storeTime;
     self._saveToStorage();
     return false;
