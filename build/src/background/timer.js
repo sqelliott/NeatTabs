@@ -101,8 +101,11 @@ Timer.prototype._addTime = function () {
     var now = new Date();
     var addTime = now - self._startTime;
     self._startTime = now;
-
-    self._time = self._time + addTime + self._storeTime;
+   console.log("millseconds :"+addTime);
+    var convToSeconds = addTime/1000;
+    console.log("seconds :"+convToSeconds);
+    self._time = convToSeconds + self._storeTime;
+    console.log(self._time);
     self._saveToStorage();
     return false;
 }
@@ -110,7 +113,7 @@ Timer.prototype._addTime = function () {
 
 Timer.prototype._setCurrent = function (domain) {
     var self = this;
-
+console.log("Domain: "+domain);
     var Regexp = /^(\w+:\/\/[^\/]+).*$/;
 
     self._addTime();
@@ -124,13 +127,22 @@ Timer.prototype._setCurrent = function (domain) {
         return false;
     }
     else {
+
         var d = domain.match(Regexp);
+        var checkDomain = d[1];
+        if (self._domain == checkDomain){
+           self._startTime = new Date();
+            return false;
+            console.log("Current_Domain: "+ self._domain
+                + " Time: " + self._time );
+        }
         self._domain = d[1];
         self._startTime = new Date();
+        self._time = 0;
 
     }
     console.log("Current_Domain: "+ self._domain
-        + " Time: " + self._time/1000 );
+        + " Time: " + self._time );
 
     return false;
 }
