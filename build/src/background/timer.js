@@ -1,15 +1,17 @@
 
-console.log("hello");
-//Object to save the url and time/start time
-//setTimeout(TabsTimeTracker,1000);
+console.log("Start Tracking"+ new Date());
 
-var current_tab = new Timer();
+
+var timer = new Timer();
 
 
 function Timer() {
-    this._tabs = null;
+    this._domain = null;
+
     this._startTime = null;
     this._time = 0;
+    this._storeTime = 0;
+    this._inStorage = false;
 
     var self = this;
     var idle = null;
@@ -31,7 +33,7 @@ function Timer() {
         function (activeInfo) {
             chrome.tabs.get(activeInfo.tabId, function (tab) {
 
-                self._setCurrent(tab.urlgit );
+                self._setCurrent(tab.url);
             });
         }
     );
@@ -72,7 +74,6 @@ function Timer() {
             if (!idle) {
                   self._updateCurrentFocusTab();
             }
-
             // The system is considered idle if detectionIntervalInSeconds
             // seconds have elapsed since the last user input detected.
             chrome.idle.queryState(60, function (idleState) {
@@ -87,44 +88,49 @@ function Timer() {
     });
 }
 
+
+
 Timer.prototype._addTime = function () {
     var self = this;
-    if (!self._tabs || !self._startTime){
+
+    if (!self._domain || !self._startTime){
         return;
     }
+
+    self._getFromStorage();
     var now = new Date();
     var addTime = now - self._startTime;
     self._startTime = now;
-
-    self._time = self._time + addTime;
-    console.log("Adding = "+self._time/6000);
-
-    //TODO:add save function
+    self._time = self._time + addTime + self._storeTime;
+    self._saveToStorage();
     return false;
-
-
 }
 
 
-Timer.prototype._setCurrent = function (tabs) {
-
+Timer.prototype._setCurrent = function (domain) {
     var self = this;
-    console.log("tab: "+ tabs);
-    self._addTime();
-    if (tabs == null ){
 
-        self._tabs = null;
+    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
+
+    self._addTime();
+
+    if (domain == null ){
+        self._domain = null;
         self._time = 0;
-        console.log("in Null "+ self._time);
         self._startTime = null;
+        console.log("Current_Domain: "+ self._domain +
+            " Time: " + self._time);
+        return false;
     }
     else {
-        self._tabs = tabs;
+        var d = domain.match(Regexp);
+        self._domain = d[1];
         self._startTime = new Date();
 
     }
+    console.log("Current_Domain: "+ self._domain
+        + " Time: " + self._time/1000 );
 
-    console.log("setCurrent: " + self._tabs);
     return false;
 }
 
@@ -133,28 +139,63 @@ Timer.prototype._setCurrent = function (tabs) {
 Timer.prototype._updateCurrentFocusTab = function () {
    var self = this;
 
-    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
     //check whether the tabs are active in their windows
     // and whether the tabs are in the current window.
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
         //it should only have one tab.
         if (tabs.length == 1) {
-
-                //Check if the window is focus.
-                chrome.windows.get(tabs[0].windowId, function (window) {
-
+            //Check if the window is focus.
+            chrome.windows.get(tabs[0].windowId, function (window) {
                     if (!window.focused) {
                         self._setCurrent(null);
                     }
-                    var url = tabs[0].url.match(Regexp);
-
-                      self._setCurrent(url);
-
+                      self._setCurrent(tabs[0].url);
                 });
             }
-
     });
 
     return false;
 };
 
+Timer.prototype._saveToStorage = function () {
+var self = this;
+//http://stackoverflow.com/questions/11692699/chrome-storage-local-set-using-a-variable-key-name
+    var domainName = self._domain;
+    var obj={};
+    obj[domainName] = self._time;
+
+    chrome.storage.local.set(obj,function (result) {
+        if (chrome.runtime.error) {
+
+            console.log("Runtime error during Saving.");
+        }
+        else {
+            console.log("Time Save Successfully.");
+
+        }
+    });
+
+};
+
+Timer.prototype._getFromStorage = function () {
+    var self = this;
+
+    chrome.storage.local.get(self._domain, function (items) {
+        var size = items[self._domain] ;
+
+        if (size == undefined){
+            console.log("undefined time");
+            self._storeTime = 0;
+            return false;
+        }
+        else if (size <= 0){
+            self._storeTime =0;
+            self._inStorage = false;
+          return false;
+        }
+        self._storeTime = size;
+        self._inStorage = true;
+
+    });
+    return false;
+};
