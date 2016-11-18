@@ -101,12 +101,9 @@ function create_current_table(tabs) {
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
-<<<<<<< HEAD
-
-=======
         var cell4 = row.insertCell(3);
+
         cell3.appendChild(favicon);
->>>>>>> d497ceb1f391420a3a6dd98f2fe61c792a47010c
         cell1.innerHTML = String(i + 1) + ".";
         cell2.appendChild(a);
         cell4.appendChild(btn);
