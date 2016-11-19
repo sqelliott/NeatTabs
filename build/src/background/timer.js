@@ -11,7 +11,6 @@ function Timer() {
     this._startTime = null;
     this._time = 0;
     this._storeTime = 0;
-    this._inStorage = false;
     this._idle = false;
 
     var self = this;
@@ -98,13 +97,11 @@ Timer.prototype._addTime = function () {
     }
 
     var addTime = new Date() - self._startTime;
-    console.log("millseconds :" + addTime);
     var seconds = addTime/1000;
-    console.log("seconds :"+seconds);
 
     self._time += seconds;
-
     self._saveToStorage();
+
     return false;
 }
 
@@ -120,7 +117,6 @@ Timer.prototype._setCurrent = function (domain) {
         self._domain = null;
         self._time = 0;
         self._startTime = null;
-        console.log("Current: "+ self._domain+" "+ self._time);
         return false;
     }
     else {
@@ -139,7 +135,6 @@ Timer.prototype._setCurrent = function (domain) {
             }
         }
     }
-    console.log("Current: "+ self._domain+" "+ self._time);
     return false;
 }
 
@@ -172,7 +167,6 @@ var self = this;
 // http://stackoverflow.com/questions/11692699/
 // chrome-storage-local-set-using-a-variable-key-name
     self._getFromStorage();
-    console.log("Time from Storage :"+ self._storeTime);
     var domainName = self._domain;
     var obj={};
 
@@ -198,16 +192,15 @@ Timer.prototype._getFromStorage = function () {
 
     chrome.storage.local.get(null, function (items) {
         var size = items[self._domain] ;
-         console.log(items[self._domain]);
+
 
         if (size == undefined){
-            console.log("undefined time");
             self._storeTime = 0;
             return false;
         }
         else if (size == 0){
             self._storeTime =0;
-            //self._inStorage = false;
+
           return false;
         }
         else {
