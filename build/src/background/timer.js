@@ -172,7 +172,7 @@ var self = this;
 
 
     var timeToStore = self._time + self._storeTime;
-   console.log(timeToStore);
+
     obj[domainName] = timeToStore;
     chrome.storage.local.set(obj,function (result) {
         if (chrome.runtime.error) {
