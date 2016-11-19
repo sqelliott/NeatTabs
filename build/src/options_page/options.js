@@ -33,24 +33,23 @@ function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
     chrome.storage.local.get("saved_tabs", function (items) {
-        console.log("saved table");
-        console.log(items.saved_tabs);
+        console.log(items);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
             // Creates table elements along with tooltips
             var a = document.createElement('a');
             a.href = items.saved_tabs[i];
-            a.appendChild(document.createTextNode(items.saved_tabs[i]));
+            a.appendChild(document.createTextNode(items.saved_tabs[i].title));
             a.setAttribute("title", items.saved_tabs[i]);
             // a.addEventListener('click', onAnchorClick);
 
-            // var favicon = document.createElement('img');
-            // favicon.rel = 'shortcut icon';
-            // console.log(items);
-            // favicon.src = items.saved_tabs[i].favIconUrl;
-            // favicon.type = 'image/x-icon';
-            // favicon.width = "20";
-            //
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            console.log(items);
+            favicon.src = items.saved_tabs[i].favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
             //button to exclude a tab from a save_tabs call
             var btn = document.createElement('BUTTON');
             // btn.addEventListener("click", removeSaveTab);
@@ -66,7 +65,7 @@ function create_saved_table() {
             var cell4 = row.insertCell(3);
             cell1.innerHTML = String(i + 1) + ".";
             cell2.appendChild(a);
-            // cell3.appendChild(favicon);
+            cell3.appendChild(favicon);
             cell4.appendChild(btn);
         }
     });
@@ -90,7 +89,6 @@ function init() {
     });
 }
 
-console.log("OPTIONS");
 document.addEventListener('DOMContentLoaded', init);
 // document.getElementById('save').addEventListener('click',
 //     save_options);
