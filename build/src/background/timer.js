@@ -12,14 +12,15 @@ function Timer() {
     this._time = 0;
     this._storeTime = 0;
     this._inStorage = false;
+    this._idle = false;
 
     var self = this;
-    var idle = null;
+
 
 
 
     //Fired when a tab is updated or when a new tab is created.
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo,tab){
             //check if the url if still the current focus.
              self._updateCurrentFocusTab();
         }
@@ -29,22 +30,20 @@ function Timer() {
     //Fires when the active tab in a window changes. Note that the tab's
     // URL may not be set at the time this event fired, but you can listen
     // to onUpdated events to be notified when a URL is set.
-    chrome.tabs.onActivated.addListener(
-        function (activeInfo) {
+    chrome.tabs.onActivated.addListener(function (activeInfo) {
             chrome.tabs.get(activeInfo.tabId, function (tab) {
-
                 self._setCurrent(tab.url);
             });
         }
     );
 
     //Fired when the currently focused window changes.
-    // Will be chrome.windows.WINDOW_ID_NONE if all chrome windows have lost focus.
-    chrome.windows.onFocusChanged.addListener(
-        function (windowId) {
+    // Will be chrome.windows.WINDOW_ID_NONE if all
+    // chrome windows have lost focus.
+    chrome.windows.onFocusChanged.addListener(function (windowId) {
             if (windowId == chrome.windows.WINDOW_ID_NONE) {
                 self._setCurrent(null);
-                return;
+                return false;
             }
              self._updateCurrentFocusTab();
         }
@@ -57,30 +56,30 @@ function Timer() {
     // and "active" when the user generates input on an idle system.
      chrome.idle.onStateChanged.addListener(function (idleState) {
         if (idleState == "active") {
-            idle = false;
-
+            self._idle = false;
              self._updateCurrentFocusTab();
-         } else {
-            idle = true;
+         }
+         else {
+            self._idle = true;
             self._setCurrent(null);
         }
      });
 
     //Alarm to check when the page goes idle.
-    chrome.alarms.create("updateTime", {periodInMinutes: 1});
+    chrome.alarms.create("updateTimer", {periodInMinutes: 1});
     chrome.alarms.onAlarm.addListener(function (alarm) {
-        if (alarm.name == "updateTime") {
+        if (alarm.name == "updateTimer") {
 
-            if (!idle) {
+            if (!self._idle) {
                   self._updateCurrentFocusTab();
             }
             // The system is considered idle if detectionIntervalInSeconds
             // seconds have elapsed since the last user input detected.
             chrome.idle.queryState(60, function (idleState) {
                 if (idleState == "active") {
-                    idle = false;
+                    self._idle = false;
                 } else {
-                    idle = true;
+                    self._idle = true;
                    self._setCurrent(null);
                 }
             });
@@ -90,31 +89,29 @@ function Timer() {
 
 
 
-Timer.prototype._addTime = function () {
+Timer.prototype._addTime = function (domain) {
     var self = this;
 
     if (!self._domain || !self._startTime){
-        return;
+        return false;
     }
 
-    self._getFromStorage();
-    var now = new Date();
-    var addTime = now - self._startTime;
-    self._startTime = now;
-   console.log("millseconds :"+addTime);
-    var convToSeconds = addTime/1000;
-    console.log("seconds :"+convToSeconds);
-    self._time = convToSeconds + self._storeTime;
-    console.log(self._time);
+    var addTime = new Date() - self._startTime;
+    console.log("millseconds :" + addTime);
+    var seconds = addTime/1000;
+    console.log("seconds :"+seconds);
+
+    self._time += seconds;
+
     self._saveToStorage();
     return false;
 }
 
 
 Timer.prototype._setCurrent = function (domain) {
+
     var self = this;
-console.log("Domain: "+domain);
-    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
+    var Regexp =  /^(\w+:\/\/[^\/]+).*$/;
 
     self._addTime();
 
@@ -127,23 +124,13 @@ console.log("Domain: "+domain);
         return false;
     }
     else {
-
         var d = domain.match(Regexp);
-        var checkDomain = d[1];
-        if (self._domain == checkDomain){
-           self._startTime = new Date();
-            return false;
-            console.log("Current_Domain: "+ self._domain
-                + " Time: " + self._time );
+
+        if (d) {
+            self._domain = d[1];
+            self._startTime = new Date();
         }
-        self._domain = d[1];
-        self._startTime = new Date();
-        self._time = 0;
-
     }
-    console.log("Current_Domain: "+ self._domain
-        + " Time: " + self._time );
-
     return false;
 }
 
@@ -158,11 +145,12 @@ Timer.prototype._updateCurrentFocusTab = function () {
         //it should only have one tab.
         if (tabs.length == 1) {
             //Check if the window is focus.
+            var domain = tabs[0].url;
             chrome.windows.get(tabs[0].windowId, function (window) {
                     if (!window.focused) {
-                        self._setCurrent(null);
+                        domain =null;
                     }
-                      self._setCurrent(tabs[0].url);
+                        self._setCurrent(domain);
                 });
             }
     });
@@ -172,11 +160,16 @@ Timer.prototype._updateCurrentFocusTab = function () {
 
 Timer.prototype._saveToStorage = function () {
 var self = this;
-//http://stackoverflow.com/questions/11692699/chrome-storage-local-set-using-a-variable-key-name
+// http://stackoverflow.com/questions/11692699/
+// chrome-storage-local-set-using-a-variable-key-name
+    self._getFromStorage();
+
     var domainName = self._domain;
     var obj={};
-    obj[domainName] = self._time;
+    var timeToStore = self._time + self._storeTime;
 
+    obj[domainName] = timeToStore;
+    console.log(obj);
     chrome.storage.local.set(obj,function (result) {
         if (chrome.runtime.error) {
 
@@ -201,13 +194,13 @@ Timer.prototype._getFromStorage = function () {
             self._storeTime = 0;
             return false;
         }
-        else if (size <= 0){
+        else if (size == 0){
             self._storeTime =0;
-            self._inStorage = false;
+            //self._inStorage = false;
           return false;
         }
         self._storeTime = size;
-        self._inStorage = true;
+
 
     });
     return false;
