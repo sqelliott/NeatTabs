@@ -260,7 +260,12 @@ function restore_tabs() {
 
 // Function to export all saved tabs to a .csv file
 function export_tabs(items) {
-    var result = items.saved_tabs.toString();
+    console.log('saving' + items);
+    var result = '';
+    for (var i = 0; i < items.saved_tabs.length; i++) {
+        console.log(items.saved_tabs[i].url);
+        result += items.saved_tabs[i].url.toString() + ',';
+    }
     var download_link = document.createElement("a");
     download_link.href = "data:text/csv," + result;
     console.log(download_link);
