@@ -100,7 +100,7 @@ Timer.prototype._addTime = function () {
     var seconds = addTime/1000;
 
     self._time += seconds;
-
+    self._saveToStorage();
 
     return false;
 }
@@ -118,7 +118,7 @@ Timer.prototype._setCurrent = function (domain) {
         self._time = 0;
         self._startTime = null;
         console.log("Current: "+ self._domain+" "+ self._time);
-        return ;
+        return false;
     }
     else {
         var d = domain.match(Regexp);
@@ -129,7 +129,6 @@ Timer.prototype._setCurrent = function (domain) {
                 self._startTime = new Date();
             }
             else{
-                self._saveToStorage();
                 self._domain = d[1];
                 self._startTime = new Date();
                 self._time = 0;
