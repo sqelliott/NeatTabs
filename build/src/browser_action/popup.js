@@ -224,7 +224,7 @@ function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
     var saved_tabs = new Array();
-    for ( var i=0, j=0; i < tabs.length; i++){
+    for ( var i = 0, j = 0; i < tabs.length; i++){
         if(current_tabs_bitVector[i]){
             saved_tabs[j] = tabs[i];
             j++;

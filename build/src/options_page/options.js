@@ -41,7 +41,6 @@ function create_saved_table() {
             a.href = items.saved_tabs[i];
             a.appendChild(document.createTextNode(items.saved_tabs[i].title));
             a.setAttribute("title", items.saved_tabs[i]);
-            // a.addEventListener('click', onAnchorClick);
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';
@@ -52,7 +51,7 @@ function create_saved_table() {
 
             //button to exclude a tab from a save_tabs call
             var btn = document.createElement('BUTTON');
-            // btn.addEventListener("click", removeSaveTab);
+            btn.addEventListener("click", removeSaveTab);
             btn.className = "btn btn-primary btn-sm";
             var btnText = document.createTextNode('Remove');
             btn.appendChild(btnText);
@@ -70,6 +69,55 @@ function create_saved_table() {
         }
     });
 };
+
+function removeSaveTab(event) {
+
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+
+    // get the button that sevent event listener to remove
+    // tabs
+    var btn = event.srcElement
+
+    //get the row of the button
+    // identify the row number of the button's row
+    var row = btn.parentNode.parentNode;
+    var rowInd = row.rowIndex;
+
+
+    chrome.storage.local.get("saved_tabs", function (items) {
+        items.saved_tabs.splice(rowInd, 1);
+
+        console.log("updated saved_tabs");
+        console.log(items.saved_tabs);
+
+        if (items.saved_tabs.length == 0) {
+            console.log("session has no tabs");
+            // based on code of 1 session saved
+            clear_storage();
+        } else {
+            chrome.storage.local.set({"saved_tabs": items.saved_tabs}, function () {
+                if (chrome.runtime.error) {
+                    console.log("Runtime error.");
+                }
+                else {
+                    console.log("Save Success.");
+                    console.log("old saved_tabs_table removed");
+                    destroy_saved_table();
+                    create_saved_table();
+                }
+            });
+        }
+    });
+}
+
+function destroy_saved_table() {
+    var saved_tabs_table = document.getElementById("saved_tabs_table");
+
+    while (saved_tabs_table.rows.length > 0) {
+        saved_tabs_table.deleteRow(0);
+    }
+    console.log("saved_table destroyed");
+}
 
 function init() {
     console.log("Creating Saved Table From Options");
