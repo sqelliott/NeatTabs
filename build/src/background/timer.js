@@ -94,7 +94,7 @@ Timer.prototype._addTime = function () {
     var self = this;
 
     if (!self._domain || !self._startTime){
-        return false;
+        return ;
     }
 
     var addTime = new Date() - self._startTime;
@@ -104,7 +104,7 @@ Timer.prototype._addTime = function () {
 
     self._time += seconds;
 
-
+    self._saveToStorage();
     return false;
 }
 
@@ -132,7 +132,6 @@ Timer.prototype._setCurrent = function (domain) {
                 self._startTime = new Date();
             }
             else{
-                self._saveToStorage();
                 self._domain = d[1];
                 self._startTime = new Date();
                 self._time = 0;
