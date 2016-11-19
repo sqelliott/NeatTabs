@@ -1,8 +1,8 @@
 function Timer() {
 }
 
-Timer.prototype.track = function(value) {
-    this.domain = value;
+Timer.prototype.track = function(url) {
+    this.domain = url;
 };
 
 Timer.prototype.time = function() {
