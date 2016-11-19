@@ -55,8 +55,10 @@ function init() {
         clear_storage();
     });
     document.getElementById("options_menu").addEventListener("click", function () {
+
         console.log("Opening Options.");
         chrome.tabs.create({url: "src/options_page/options.html"});
+
     });
     document.getElementById("export_menu").addEventListener("click", function () {
         console.log("Exporting Session.");
@@ -218,6 +220,13 @@ function recent_callback(callback) {
 function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
+    var saved_tabs = new Array();
+    for ( var i=0, j=0; i < tabs.length; i++){
+        if(current_tabs_bitVector[i]){
+            saved_tabs[j] = tabs[i];
+            j++;
+        }
+    }
 
     chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
         if (chrome.runtime.error) {
@@ -295,82 +304,6 @@ function excludeCurrentTab(event) {
 }
 
 
-//Object to save the url and time
-function track_url(url, time) {
-    this._url = url;
-    this._time = time;
-
-}
-//get the current time
-function set_current_time() {
-    var now = new Date();
-    return now;
-
-}
-//check if track_tabs is empty.
-/*function get_track_tabs(){
- chrome.storage.local.get("track_tabs", function (items) {
- if(items.track_tabs.length > 0){
-
- return false;
- }
- else {
- return true;
- }
- });
- }
- */
-
-//Enter current url to the the track_tabs array
-function track_tabs(current_url) {
-    // console.log("inside track_tabs: " + current_url.length);
-
-    if (current_url.length > 0) {
-
-        var current_url_time = new track_url(current_url[1], set_current_time());
-        console.log("added to local storage : " + current_url_time._url + current_url_time._time);
-        // save the current url object into track_tabs
-        chrome.storage.local.set({"track_tabs": current_url_time}),
-            function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                } else {
-                    console.log("Save to tracker Success.");
-                }
-            };
-    }
-
-    console.log("outside the loop");
-    return false;
-}
-
-setTimeout(return_active_focus(), 2000);
-
-function return_active_focus() {
-    var current_url;
-    console.log("inside return_active_focus");
-    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
-    //check whether the tabs are active in their windows
-    // and whether the tabs are in the current window.
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (current_tabs) {
-        //it should only have one tab.
-        if (current_tabs.length == 1) {
-            current_url = current_tabs[0].url.match(Regexp);
-
-            //Check if the window is focus.
-            chrome.windows.get(current_tabs[0].windowId, function (window) {
-                if (!window.focused) {
-                    current_url = null;
-                    console.log("Current active/focused: NULL ");
-                }
-                // current_url;
-                track_tabs(current_url);
-                console.log("Current active/focused: " + current_url[0]);
-            });
-        }
-    });
-    return false;
-}
 
 function removeSaveTab(event) {
 
