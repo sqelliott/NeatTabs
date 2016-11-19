@@ -1,4 +1,4 @@
-﻿Sprint 3 Plan
+Sprint 3 Plan
 * Product Name: Neat Tabs
 * Team Name: Tab-O-Rama
 * Sprint Completion Date: Friday, November 4, 2016
@@ -31,7 +31,7 @@ Arthur Chiao               [Scrum Master]
 Richa                          [Product Owner]
 
 
-Task Assignment 
+Task Assignment
 Initial burn up chart/Initial Scrum Board
 Scrum times
 Weekly Meeting Times
@@ -39,9 +39,3 @@ Meeting Location: JB316/JB340B
 Tuesday: 9:45AM
 Wednesday: 11:50PM
 Friday: 11:50PM
-                                                   
-                        
-                                
-                                        
-*                                                                                                          
-*

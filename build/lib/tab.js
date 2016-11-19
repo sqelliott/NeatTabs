@@ -1,8 +1,8 @@
-function tab() {
+function Tab() {
 }
 
-session.prototype.has_icon = function() {
-	this.icon = true;
+Tab.prototype.url = function(url) {
+    tab.url = url;
 };
 
-module.exports = tab;
+module.exports = Tab;

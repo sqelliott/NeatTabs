@@ -1,8 +1,20 @@
-function session() {
+function Session() {
 }
 
-session.prototype.is_saved = function() {
-	this.saved = true;
+Session.prototype.save = function() {
+    this.save = true;
 };
 
-module.exports = session;
+Session.prototype.restore = function() {
+    this.restore = true;
+};
+
+Session.prototype.clear = function() {
+    this.tabs = null;
+};
+
+Session.prototype.add = function(tab) {
+    this.tabs += tab;
+};
+
+module.exports = Session;

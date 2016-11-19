@@ -2,8 +2,8 @@
 NeatTabs
 10/19/2016
 Actions to stop doing:
-1. One thing our team should stop doing is allowing days to pass without completing a task. If we commit to complete a task on time we are going to increase productivity.  
-2. Another thing we should stop doing is trying to work by ourselves. If we start working at the design rooms, we can help each when stuck in a problem. 
+1. One thing our team should stop doing is allowing days to pass without completing a task. If we commit to complete a task on time we are going to increase productivity.
+2. Another thing we should stop doing is trying to work by ourselves. If we start working at the design rooms, we can help each when stuck in a problem.
 3. Another thing we should stop doing is guessing the number of hours a task will take to complete. As a team we need to spend more time doing time estimations per task so that we can have a better completion rate in the next sprint. We can accomplish this by better utilizing the Planning Poker technique, to form an estimation that is based on all of our opinions of the requirements for a task.
 
 
@@ -18,10 +18,9 @@ Actions to keep doing:
 1. One thing that is working well is having an additional meeting outside of the Scrum meetings to go over everything we worked on in detail and to try and integrate things all together. This allows us to cover the finer details that we otherwise would not be able to cover in the Scrum meeting.
 2. Another thing that works well is sharing the different resources and references that each person uses. Having access to the original source is helpful when learning a new language.
 3. Maintaining close to daily communication between team members so we know their status on the project and know how our team is doing as a whole.
- 
 
 
-Work completed/not completed: 
+Work completed/not completed:
 This is a list of the user stories that were completed during the previous sprint, and a list of the user stories not completed during this sprint (but which were part of this sprint, and were in the sprint plan).
 
 
@@ -33,9 +32,7 @@ Stories Completed:
 
 
 Stories Not Completed:
-1. (8) As a user, I want to be able to group together certain domains/tabs that have similar uses to me so that I can access them more efficiently. 
-
-
+1. (8) As a user, I want to be able to group together certain domains/tabs that have similar uses to me so that I can access them more efficiently.
 
 
 Work completion rate:
