@@ -1,9 +1,8 @@
 function Tab() {
 }
 
-Tab.prototype.hasURL = function(value) {
-    // something complicated
-    throw new Error("not yet implemented");
+Tab.prototype.url = function(url) {
+    tab.url = url;
 };
 
 module.exports = Tab;

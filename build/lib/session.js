@@ -1,24 +1,20 @@
 function Session() {
 }
-Session.prototype.play = function(song) {
-    this.currentlyPlayingSong = song;
-    this.isPlaying = true;
+
+Session.prototype.save = function() {
+    this.save = true;
 };
 
-Session.prototype.pause = function() {
-    this.isPlaying = false;
+Session.prototype.restore = function() {
+    this.restore = true;
 };
 
-Session.prototype.resume = function() {
-    if (this.isPlaying) {
-        throw new Error("song is already playing");
-    }
-
-    this.isPlaying = true;
+Session.prototype.clear = function() {
+    this.tabs = null;
 };
 
-Session.prototype.makeFavorite = function() {
-    this.currentlyPlayingSong.persistFavoriteStatus(true);
+Session.prototype.add = function(tab) {
+    this.tabs += tab;
 };
 
 module.exports = Session;
