@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        //call API
+        google.charts.load(current, {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        //create data
+
+        //create table
+        function drawChart(){
+            var data = google.visualization.DataTable();
+            data.addColumn('string','Domain');
+            data.addColumn('number', 'Time (Min)');
+
+            chrome.storage.local.get(null, function(items) {
+                for (key in items) {
+                    data.addRow([key._domain, key_storeTime])//: (array.i.time%60)}, ()]) //f  3ormats into hr:min
+                };
+            });
+
+
+            var options = {
+                title: 'Online Activity Broken Down By Time',
+                legend: 'none',
+            }
+]
+            var chart = new google.visualization.PieChart(document.getElementById("piechart"));
+
+            chart.draw(data, options);
+
+        };
+
+
+
+    </script>
+</head>
+<body>
+    <div id= "piechart" style="width: x; height: y;"></div>
+</body>
+</html>
+
+
