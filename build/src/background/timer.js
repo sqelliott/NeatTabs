@@ -117,7 +117,6 @@ Timer.prototype._setCurrent = function (domain) {
         self._domain = null;
         self._time = 0;
         self._startTime = null;
-        console.log("Current: "+ self._domain+" "+ self._time);
         return false;
     }
     else {
@@ -136,7 +135,6 @@ Timer.prototype._setCurrent = function (domain) {
             }
         }
     }
-    console.log("Current: "+ self._domain+" "+ self._time);
     return false;
 }
 
@@ -194,7 +192,7 @@ Timer.prototype._getFromStorage = function () {
 
     chrome.storage.local.get(null, function (items) {
         var size = items[self._domain] ;
-         console.log(items[self._domain]);
+
 
         if (size == undefined){
             self._storeTime = 0;
@@ -202,7 +200,7 @@ Timer.prototype._getFromStorage = function () {
         }
         else if (size == 0){
             self._storeTime =0;
-            //self._inStorage = false;
+
           return false;
         }
         else {
