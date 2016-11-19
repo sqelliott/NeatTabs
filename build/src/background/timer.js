@@ -32,6 +32,7 @@ function Timer() {
     // to onUpdated events to be notified when a URL is set.
     chrome.tabs.onActivated.addListener(function (activeInfo) {
             chrome.tabs.get(activeInfo.tabId, function (tab) {
+
                 self._setCurrent(tab.url);
             });
         }
@@ -89,7 +90,7 @@ function Timer() {
 
 
 
-Timer.prototype._addTime = function (domain) {
+Timer.prototype._addTime = function () {
     var self = this;
 
     if (!self._domain || !self._startTime){
@@ -103,7 +104,7 @@ Timer.prototype._addTime = function (domain) {
 
     self._time += seconds;
 
-    self._saveToStorage();
+
     return false;
 }
 
@@ -119,18 +120,27 @@ Timer.prototype._setCurrent = function (domain) {
         self._domain = null;
         self._time = 0;
         self._startTime = null;
-        console.log("Current_Domain: "+ self._domain +
-            " Time: " + self._time);
+        console.log("Current: "+ self._domain+" "+ self._time);
         return false;
     }
     else {
         var d = domain.match(Regexp);
 
         if (d) {
-            self._domain = d[1];
-            self._startTime = new Date();
+
+            if(d[1] == self._domain) {
+                self._startTime = new Date();
+            }
+            else{
+                self._saveToStorage();
+                self._domain = d[1];
+                self._startTime = new Date();
+                self._time = 0;
+
+            }
         }
     }
+    console.log("Current: "+ self._domain+" "+ self._time);
     return false;
 }
 
@@ -163,13 +173,14 @@ var self = this;
 // http://stackoverflow.com/questions/11692699/
 // chrome-storage-local-set-using-a-variable-key-name
     self._getFromStorage();
-
+    console.log("Time from Storage :"+ self._storeTime);
     var domainName = self._domain;
     var obj={};
-    var timeToStore = self._time + self._storeTime;
 
+
+    var timeToStore = self._time + self._storeTime;
+   console.log(timeToStore);
     obj[domainName] = timeToStore;
-    console.log(obj);
     chrome.storage.local.set(obj,function (result) {
         if (chrome.runtime.error) {
 
@@ -180,14 +191,15 @@ var self = this;
 
         }
     });
-
+return false;
 };
 
 Timer.prototype._getFromStorage = function () {
     var self = this;
 
-    chrome.storage.local.get(self._domain, function (items) {
+    chrome.storage.local.get(null, function (items) {
         var size = items[self._domain] ;
+         console.log(items[self._domain]);
 
         if (size == undefined){
             console.log("undefined time");
@@ -199,9 +211,9 @@ Timer.prototype._getFromStorage = function () {
             //self._inStorage = false;
           return false;
         }
-        self._storeTime = size;
-
-
+        else {
+            self._storeTime = size;
+        }
     });
     return false;
 };
