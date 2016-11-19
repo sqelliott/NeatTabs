@@ -1,8 +1,9 @@
-function tab() {
+function Tab() {
 }
 
-session.prototype.has_icon = function() {
-	this.icon = true;
+Tab.prototype.hasURL = function(value) {
+    // something complicated
+    throw new Error("not yet implemented");
 };
 
-module.exports = tab;
+module.exports = Tab;

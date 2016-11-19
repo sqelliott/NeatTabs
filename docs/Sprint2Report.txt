@@ -16,10 +16,9 @@ Actions to start doing:
 Actions to keep doing:
 1. One thing our team should keep doing is having additional meetings outside of Scrum meetings to collaborate, discuss, and work on the project together.
 2. Another thing to keep doing is discussing the various ways of implementing a function or requirement and hashing out how feasible each option is. This allows for every member to be involved in the thought process and for the pros and cons to be weighed out as a collective.
- 
 
 
-Work completed/not completed: 
+Work completed/not completed:
 This is a list of the user stories that were completed during the previous sprint, and a list of the user stories not completed during this sprint (but which were part of this sprint, and were in the sprint plan).
 
 
