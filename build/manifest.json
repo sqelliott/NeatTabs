@@ -30,6 +30,8 @@
     "sessions",
     "tabs",
     "storage",
-    "downloads"
+    "downloads",
+    "alarms",
+    "idle"
   ]
 }
