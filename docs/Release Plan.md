@@ -34,3 +34,4 @@
 1. Integration with Google Calendars
 2. Make time allocations achievement based
 3. Become a full fledged web/desktop application
+4. Expand to other browsers such as Safari, Opera, Firefox, etc.
