@@ -135,17 +135,17 @@ function init() {
     create_saved_table();
     return_callback(create_current_table);
 
-    document.getElementById('history').addEventListener('click', function() {
-        chrome.tabs.update({ url: 'chrome://chrome/history' });
+    document.getElementById('history').addEventListener('click', function () {
+        chrome.tabs.update({url: 'chrome://chrome/history'});
     });
-    document.getElementById('extensions').addEventListener('click', function() {
-        chrome.tabs.update({ url: 'chrome://chrome/extensions' });
+    document.getElementById('extensions').addEventListener('click', function () {
+        chrome.tabs.update({url: 'chrome://chrome/extensions'});
     });
-    document.getElementById('settings').addEventListener('click', function() {
-        chrome.tabs.update({ url: 'chrome://chrome/settings' });
+    document.getElementById('settings').addEventListener('click', function () {
+        chrome.tabs.update({url: 'chrome://chrome/settings'});
     });
-    document.getElementById('about').addEventListener('click', function() {
-        chrome.tabs.update({ url: 'chrome://chrome/help' });
+    document.getElementById('about').addEventListener('click', function () {
+        chrome.tabs.update({url: 'chrome://chrome/help'});
     });
 }
 
@@ -153,10 +153,7 @@ document.addEventListener('DOMContentLoaded', init);
 // document.getElementById('save').addEventListener('click',
 //     save_options);
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Initialization function
+//Below is stuff mostly ported from popup.js
 
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
@@ -223,8 +220,8 @@ function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
     var saved_tabs = new Array();
-    for ( var i = 0, j = 0; i < tabs.length; i++){
-        if(current_tabs_bitVector[i]){
+    for (var i = 0, j = 0; i < tabs.length; i++) {
+        if (current_tabs_bitVector[i]) {
             saved_tabs[j] = tabs[i];
             j++;
         }
@@ -307,58 +304,5 @@ function excludeCurrentTab(event) {
         btn.appendChild(btnText);
         btn.className = "btn btn-primary btn-sm";
         console.log("Include " + (rowInd + 1) + " from current_tabs_table");
-    }
-}
-
-// Initialization routine
-document.addEventListener('DOMContentLoaded', init);
-
-function start(tab) {
-    chrome.windows.getCurrent(getWindows);
-}
-
-function getWindows(win) {
-    targetWindow = win;
-    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
-}
-
-function getTabs(tabs) {
-    tabCount = tabs.length;
-    // We require all the tab information to be populated.
-    chrome.windows.getAll({"populate": true}, listTabs);
-}
-
-function listTabs(windows) {
-    var test_table = document.getElementById("test_table");
-
-    for (var i = 0; i < windows.length; i++) {
-        var table = document.createElement("table");
-        for (var j = 0; j < windows[i].tabs.length; j++) {
-            var tab = windows[i].tabs[j];
-
-            var a = document.createElement('a');
-            a.href = tab.url;
-            a.appendChild(document.createTextNode(tab.title));
-            a.setAttribute("title", tab.url);
-            a.addEventListener('click', onAnchorClick);
-
-            var favicon = document.createElement('img');
-            favicon.rel = 'shortcut icon';
-            favicon.src = tab.favIconUrl;
-            favicon.type = 'image/x-icon';
-            favicon.width = "20";
-
-            // Inserts created elements into the table in the HTML page
-            var row = test_table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            cell1.innerHTML = String(j + 1) + ".";
-            cell2.appendChild(a);
-            cell3.appendChild(favicon);
-            // console.log(tab.url);
-        }
-
-        test_table.appendChild(table);
     }
 }
