@@ -30,7 +30,7 @@ Sean Elliott            [Scrum Master]
 Arthur Chiao          [Developer]
 Richa                     [Product Owner]
 
-Task Assignment 
+Task Assignment
 Initial burn up chart/Initial Scrum Board
 Scrum times
 Weekly Meeting Times
@@ -38,14 +38,3 @@ Meeting Location: JB316/JB340B
 Tuesday: 9:45AM
 Wednesday: 11:50PM
 Friday: 11:50PM
-                        
-            
-                
-                    
-                                                    
-                        
-                                    
-            
-        
-
-
