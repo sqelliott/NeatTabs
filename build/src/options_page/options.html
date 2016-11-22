@@ -6,45 +6,63 @@
     <link rel="stylesheet" type="text/css" href="../../styles/options.css"/>
     <link rel="stylesheet" type="text/css" href="../../styles/options-widgets.css"/>
     <link rel="stylesheet" type="text/css" href="../../styles/options-mac.css"/>
+
     <script src="../../js/jquery-2.0.3.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../../css/custom.css" rel="stylesheet" media="screen">
+    <!--<link href="../../css/custom.css" rel="stylesheet" media="screen">-->
+
     <script type="text/javascript" src="../../scripts/options-setup.js"></script>
     <script type="text/javascript" src="options.js"></script>
 </head>
 
 <body>
-<nav class="sideBar">
-    <h3>Chrome</h3>
-    <ul>
-        <li><a href="chrome://history" id="history">History</a></li>
-        <li>
-            <a href="chrome://extensions" id="extensions">Extensions</a>
-            <ul>
-                <li>NeatTabs</li>
-            </ul>
-        </li>
-        <li><a href="chrome://settings" id="settings">Settings</a></li>
-        <li><a href="chrome://about" id="about">About</a></li>
-    </ul>
-</nav>
-<header>
-    <h3>NeatTabs</h3>
-</header>
+    <nav class="sideBar">
+        <h3>Chrome</h3>
+        <ul>
+            <li><a href="chrome://history" id="history">History</a></li>
+            <li>
+                <a href="chrome://extensions" id="extensions">Extensions</a>
+                <ul>
+                    <li>NeatTabs</li>
+                </ul>
+            </li>
+            <li><a href="chrome://settings" id="settings">Settings</a></li>
+            <li><a href="chrome://about" id="about">About</a></li>
+        </ul>
+    </nav>
 
-<div style="display: inline-block">
-    <table class="table table-hover" id="saved_tabs_table">
-        <caption>Saved Tabs</caption>
-    </table>
-</div>
-<div style="display: inline-block">
-    <table class="table table-hover" id="current_tabs_table">
-        <caption>Current Tabs</caption>
-    </table>
-</div>
+    <header>
+        <h3>NeatTabs</h3>
+    </header>
 
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="#" id="current_tabs">Current Tabs</a></li>
+            <li><a href="#" id="save_menu">Save</a></li>
+            <li><a href="#" id="restore_menu">Restore</a></li>
+            <li><a href="#" id="clear_menu">Clear</a></li>
+            <li><a href="#" id="options_menu">Options</a></li>
+            <li><a href="#" id="export_menu">Export</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#" id="track_menu">Track</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" id="about">About</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
+    <div class="options_table">
+        <table class="table" id="saved_tabs_table">
+            <caption>Saved Tabs</caption>
+        </table>
+        <table class="table" id="current_tabs_table">
+            <caption>Current Tabs</caption>
+        </table>
+    </div>
 </body>
 
 </html>

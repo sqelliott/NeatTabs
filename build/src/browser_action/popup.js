@@ -7,26 +7,6 @@ function init() {
     console.log("Starting Logging");
 
     return_callback(create_current_table);
-    recent_callback(create_recent_table);
-    create_saved_table();
-
-    document.getElementById("current_tabs").addEventListener("click", function () {
-        console.log("Showing Current Tabs.");
-        var saved_table = document.getElementById("saved_tabs_table");
-        var current_tabs_table = document.getElementById("current_tabs_table");
-
-        saved_table.style.display = "none";
-        current_tabs_table.style.display = "";
-    });
-
-    document.getElementById("saved_tabs").addEventListener("click", function () {
-        console.log("Showing Saved Tabs.");
-        var saved_tabs_table = document.getElementById("saved_tabs_table");
-        var current_tabs_table = document.getElementById("current_tabs_table");
-
-        saved_tabs_table.style.display = "";
-        current_tabs_table.style.display = "none";
-    });
 
     document.getElementById("save_menu").addEventListener("click", function () {
         console.log("Saving Session.");
@@ -305,5 +285,3 @@ function removeSaveTab(event) {
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
-
-// chrome.browserAction.onClicked.addListener(init);
