@@ -6,8 +6,6 @@ current_tabs_bitVector = new Array();
 function init() {
     console.log("Starting Logging");
 
-    chrome.windows.getCurrent(getWindows);
-
     return_callback(create_current_table);
     recent_callback(create_recent_table);
     create_saved_table();
@@ -308,4 +306,4 @@ function removeSaveTab(event) {
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
 
-chrome.browserAction.onClicked.addListener(init);
+// chrome.browserAction.onClicked.addListener(init);
