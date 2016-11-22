@@ -1,5 +1,3 @@
-
-
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
