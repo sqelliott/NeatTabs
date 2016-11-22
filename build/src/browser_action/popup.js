@@ -108,7 +108,7 @@ function create_current_table(tabs) {
         cell2.appendChild(a);
         cell4.appendChild(btn);
     }
-};
+}
 
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
@@ -152,42 +152,7 @@ function create_saved_table() {
             cell4.appendChild(btn);
         }
     });
-};
-
-function create_recent_table(sessions) {
-    var recent_tabs_table = document.getElementById("recent_tabs_table");
-
-    sessions.forEach(function (session, i) {
-        var a = document.createElement('a');
-        if (session.window) {
-            session.window.tabs.forEach(function (tab) {
-                a.href = tab.url;
-                a.appendChild(document.createTextNode(tab.title));
-                a.setAttribute("title", tab.url);
-                a.addEventListener('click', onAnchorClick);
-                console.log(a);
-
-                var favicon = document.createElement('img');
-                favicon.rel = 'shortcut icon';
-                favicon.src = tab.favIconUrl;
-                favicon.type = 'image/x-icon';
-                favicon.width = "20";
-            });
-        } else {
-            a.href = session.tab.url;
-            a.appendChild(document.createTextNode(session.tab.title));
-            a.setAttribute("title", session.tab.title);
-            a.addEventListener('click', onAnchorClick);
-        }
-        var row = recent_tabs_table.insertRow(i);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        cell1.innerHTML = String(i + 1) + ".";
-        cell2.appendChild(a);
-        cell3.appendChild(favicon);
-    });
-};
+}
 
 function destroy_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
@@ -205,7 +170,7 @@ function return_callback(callback) {
     chrome.tabs.query({}, function (tabs) {
         callback(tabs);
     });
-};
+}
 
 function restore_callback(callback) {
     chrome.storage.local.get("saved_tabs", function (items) {

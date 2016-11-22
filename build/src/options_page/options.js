@@ -1,33 +1,4 @@
-function save_options() {
-    create_saved_table();
-    var color = document.getElementById('color').value;
-    var likesColor = document.getElementById('like').checked;
-    chrome.storage.sync.set({
-        favoriteColor: color,
-        likesColor: likesColor
-    }, function() {
-        // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = 'Options saved.';
-        setTimeout(function() {
-            status.textContent = '';
-        }, 750);
-    });
-}
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options() {
-    // Use default value color = 'red' and likesColor = true.
-    chrome.storage.sync.get({
-        favoriteColor: 'red',
-        likesColor: true
-    }, function(items) {
-        document.getElementById('color').value = items.favoriteColor;
-        document.getElementById('like').checked = items.likesColor;
-    });
-}
-// document.addEventListener('DOMContentLoaded', restore_options);
 
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
@@ -119,9 +90,52 @@ function destroy_saved_table() {
     console.log("saved_table destroyed");
 }
 
+function create_recent_table(sessions) {
+    var recent_tabs_table = document.getElementById("recent_tabs_table");
+
+    sessions.forEach(function (session, i) {
+        var a = document.createElement('a');
+        if (session.window) {
+            session.window.tabs.forEach(function (tab) {
+                a.href = tab.url;
+                a.appendChild(document.createTextNode(tab.title));
+                a.setAttribute("title", tab.url);
+                a.addEventListener('click', onAnchorClick);
+                console.log(a);
+
+                var favicon = document.createElement('img');
+                favicon.rel = 'shortcut icon';
+                favicon.src = tab.favIconUrl;
+                favicon.type = 'image/x-icon';
+                favicon.width = "20";
+            });
+        } else {
+            a.href = session.tab.url;
+            a.appendChild(document.createTextNode(session.tab.title));
+            a.setAttribute("title", session.tab.title);
+            a.addEventListener('click', onAnchorClick);
+        }
+        var row = recent_tabs_table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
+        cell3.appendChild(favicon);
+    });
+}
+
+function restore_callback(callback) {
+    chrome.storage.local.get("saved_tabs", function (items) {
+        callback(items);
+    });
+}
+
+
 function init() {
     console.log("Creating Saved Table From Options");
     create_saved_table();
+    return_callback(create_current_table);
 
     document.getElementById('history').addEventListener('click', function() {
         chrome.tabs.update({ url: 'chrome://chrome/history' });
@@ -140,3 +154,213 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 // document.getElementById('save').addEventListener('click',
 //     save_options);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Initialization function
+
+//control tabs to be saved by user
+current_tabs_bitVector = new Array();
+
+function create_current_table(tabs) {
+    var current_tabs_table = document.getElementById("current_tabs_table");
+    for (var i = 0; i < tabs.length; i++) {
+        // initial current_tabs_bitVector
+        // to save all tabs
+        current_tabs_bitVector[i] = 1;
+        // console.log(tabs);
+        // Creates table elements along with tooltips
+        var a = document.createElement('a');
+        a.href = tabs[i].url;
+        a.appendChild(document.createTextNode(tabs[i].title));
+        a.setAttribute("title", tabs[i].url);
+        a.addEventListener('click', onAnchorClick);
+
+        //button to exclude a tab from a save_tabs call
+        var btn = document.createElement('BUTTON');
+        btn.addEventListener("click", excludeCurrentTab);
+        btn.className = "btn btn-primary btn-sm";
+
+        var btnText = document.createTextNode('Exclude');
+        btn.appendChild(btnText);
+
+        var favicon = document.createElement('img');
+        favicon.rel = 'shortcut icon';
+        favicon.src = tabs[i].favIconUrl;
+        favicon.type = 'image/x-icon';
+        favicon.width = "20";
+
+        // Inserts created elements into the table in the HTML page
+        var row = current_tabs_table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+
+        cell3.appendChild(favicon);
+        cell1.innerHTML = String(i + 1) + ".";
+        cell2.appendChild(a);
+        cell4.appendChild(btn);
+    }
+}
+
+
+// Callback function for returning URL object
+// https://stackoverflow.com/questions/19170595/putting-chrome-tabs-query-in-a-function-always-returns-undefined
+function return_callback(callback) {
+    chrome.tabs.query({}, function (tabs) {
+        callback(tabs);
+    });
+}
+
+function recent_callback(callback) {
+    chrome.sessions.getRecentlyClosed(function (sessions) {
+        callback(sessions);
+    });
+}
+
+// Saves only tab urls
+function save_tabs(tabs) {
+    console.log("Executing save_tabs(tabs0 function");
+    console.log(tabs);
+    var saved_tabs = new Array();
+    for ( var i = 0, j = 0; i < tabs.length; i++){
+        if(current_tabs_bitVector[i]){
+            saved_tabs[j] = tabs[i];
+            j++;
+        }
+    }
+
+    chrome.storage.local.set({"saved_tabs": saved_tabs}), function () {
+        if (chrome.runtime.error) {
+            console.log("Runtime error.");
+        }
+        else {
+            console.log("Save Success.");
+        }
+    };
+    create_saved_table();
+}
+
+// Clears local storage
+function clear_storage() {
+    chrome.storage.local.clear();
+    console.log("storage cleared");
+    destroy_saved_table();
+}
+
+// Function to reopen all saved tabs in a new window
+function restore_tabs() {
+    chrome.storage.local.get("saved_tabs", function (items) {
+        console.log(items);
+        console.log('restore tabs');
+        chrome.windows.create({focused: true, url: items.saved_tabs});
+    });
+}
+
+// Function to export all saved tabs to a .csv file
+function export_tabs(items) {
+    console.log('saving' + items);
+    var result = '';
+    for (var i = 0; i < items.saved_tabs.length; i++) {
+        console.log(items.saved_tabs[i].url);
+        result += items.saved_tabs[i].url.toString() + ',';
+    }
+    var download_link = document.createElement("a");
+    download_link.href = "data:text/csv," + result;
+    console.log(download_link);
+
+    chrome.downloads.download({
+        url: download_link.toString(),
+        filename: 'export.csv'
+    });
+}
+
+// Event listener for clicks on links in a browser action popup.
+// Open the link in a new tab of the current window.
+function onAnchorClick(event) {
+    chrome.tabs.create({url: event.srcElement.href});
+    console.log(event.srcElement.toString());
+    return false;
+}
+
+// Event listener for clicks on current tabs button
+// Select a tab that user does not want to save
+function excludeCurrentTab(event) {
+    var current_tabs_table = document.getElementById("current_tabs_table");
+    var btn = event.srcElement;
+    var btnChild = btn.childNodes;
+    btn.removeChild(btn.childNodes[0]);
+
+    var row = event.srcElement.parentNode.parentNode;
+    var rowInd = row.rowIndex;
+
+    if (current_tabs_bitVector[rowInd] == 1) {
+        current_tabs_bitVector[rowInd] = 0;
+        var btnText = document.createTextNode("Include");
+        btn.appendChild(btnText);
+        btn.className = "btn btn-danger btn-sm";
+        console.log("exclude " + (rowInd + 1) + " from current_tabs_table");
+    }
+    else {
+        current_tabs_bitVector[rowInd] = 1;
+        var btnText = document.createTextNode("Exclude");
+        btn.appendChild(btnText);
+        btn.className = "btn btn-primary btn-sm";
+        console.log("Include " + (rowInd + 1) + " from current_tabs_table");
+    }
+}
+
+// Initialization routine
+document.addEventListener('DOMContentLoaded', init);
+
+function start(tab) {
+    chrome.windows.getCurrent(getWindows);
+}
+
+function getWindows(win) {
+    targetWindow = win;
+    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
+}
+
+function getTabs(tabs) {
+    tabCount = tabs.length;
+    // We require all the tab information to be populated.
+    chrome.windows.getAll({"populate": true}, listTabs);
+}
+
+function listTabs(windows) {
+    var test_table = document.getElementById("test_table");
+
+    for (var i = 0; i < windows.length; i++) {
+        var table = document.createElement("table");
+        for (var j = 0; j < windows[i].tabs.length; j++) {
+            var tab = windows[i].tabs[j];
+
+            var a = document.createElement('a');
+            a.href = tab.url;
+            a.appendChild(document.createTextNode(tab.title));
+            a.setAttribute("title", tab.url);
+            a.addEventListener('click', onAnchorClick);
+
+            var favicon = document.createElement('img');
+            favicon.rel = 'shortcut icon';
+            favicon.src = tab.favIconUrl;
+            favicon.type = 'image/x-icon';
+            favicon.width = "20";
+
+            // Inserts created elements into the table in the HTML page
+            var row = test_table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            cell1.innerHTML = String(j + 1) + ".";
+            cell2.appendChild(a);
+            cell3.appendChild(favicon);
+            // console.log(tab.url);
+        }
+
+        test_table.appendChild(table);
+    }
+}
