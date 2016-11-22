@@ -3,14 +3,6 @@
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
 
-function session(name) {
-    this.name = name;
-    this.urls = [];
-    this.icon = [];
-    this.title = [];
-    this.time = 0;
-}
-
 function init() {
     console.log("Starting Logging");
 
@@ -65,7 +57,6 @@ function init() {
         restore_callback(export_tabs);
     });
 }
-
 
 
 function create_current_table(tabs) {
@@ -189,8 +180,8 @@ function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
     var saved_tabs = new Array();
-    for ( var i = 0, j = 0; i < tabs.length; i++){
-        if(current_tabs_bitVector[i]){
+    for (var i = 0, j = 0; i < tabs.length; i++) {
+        if (current_tabs_bitVector[i]) {
             saved_tabs[j] = tabs[i];
             j++;
         }
@@ -276,17 +267,13 @@ function excludeCurrentTab(event) {
     }
 }
 
-
-
 function removeSaveTab(event) {
-
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    // get the button that sevent event listener to remove
-    // tabs
+    // get the button that sevent event listener to remove tabs
     var btn = event.srcElement
 
-    //get the row of the button
+    // get the row of the button
     // identify the row number of the button's row
     var row = btn.parentNode.parentNode;
     var rowInd = row.rowIndex;
