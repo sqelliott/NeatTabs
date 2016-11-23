@@ -1,4 +1,4 @@
-console.log("Start Tracking" + new Date());
+// console.log("Start Tracking" + new Date());
 
 var timer = new Timer();
 

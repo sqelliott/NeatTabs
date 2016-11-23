@@ -6,20 +6,20 @@ describe("Timer", function() {
             onClicked: {
                 addListener: function(){}
             }
+        },
+        storage: {
+            local: {
+                set: function() {},
+                get: function() {}
+            }
         }
     };
 
-    var Tab = require('../lib/tab');
-    var Session = require('../lib/session');
     var Timer = require('../src/background/timer');
 
-    var tab;
-    var session;
     var timer;
 
     beforeEach(function() {
-        tab = new Tab();
-        session = new Session();
         timer = new Timer();
     });
 
@@ -27,5 +27,14 @@ describe("Timer", function() {
         spyOn(timer, '_time');
         timer._setCurrent('https://test.com');
         expect(timer._domain).not.toEqual(null);
+        console.log("Unit Test: Timer Domain - " + timer._domain);
+    });
+
+    it("should be able to save to storage", function() {
+        timer._setCurrent('https://test.com');
+        // timer._saveToStorage(timer);
+        expect(timer._time).toBe(0);
+        expect(timer._startTime).toEqual(new Date());
+        expect(timer._domain).toBe('https://test.com');
     });
 });

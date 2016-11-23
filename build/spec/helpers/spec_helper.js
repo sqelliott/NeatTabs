@@ -6,7 +6,7 @@ beforeEach(function () {
                     var timer = actual;
 
                     return {
-                        pass: timer.domain === expected
+                        pass: timer._domain === expected
                     }
                 }
             };
