@@ -3,40 +3,10 @@
 //control tabs to be saved by user
 current_tabs_bitVector = new Array();
 
-function session(name) {
-    this.name = name;
-    this.urls = [];
-    this.icon = [];
-    this.title = [];
-    this.time = 0;
-}
-
 function init() {
     console.log("Starting Logging");
 
-    chrome.windows.getCurrent(getWindows);
-
     return_callback(create_current_table);
-    recent_callback(create_recent_table);
-    create_saved_table();
-
-    document.getElementById("current_tabs").addEventListener("click", function () {
-        console.log("Showing Current Tabs.");
-        var saved_table = document.getElementById("saved_tabs_table");
-        var current_tabs_table = document.getElementById("current_tabs_table");
-
-        saved_table.style.display = "none";
-        current_tabs_table.style.display = "";
-    });
-
-    document.getElementById("saved_tabs").addEventListener("click", function () {
-        console.log("Showing Saved Tabs.");
-        var saved_tabs_table = document.getElementById("saved_tabs_table");
-        var current_tabs_table = document.getElementById("current_tabs_table");
-
-        saved_tabs_table.style.display = "";
-        current_tabs_table.style.display = "none";
-    });
 
     document.getElementById("save_menu").addEventListener("click", function () {
         console.log("Saving Session.");
@@ -65,7 +35,6 @@ function init() {
         restore_callback(export_tabs);
     });
 }
-
 
 
 function create_current_table(tabs) {
@@ -107,7 +76,7 @@ function create_current_table(tabs) {
         cell2.appendChild(a);
         cell4.appendChild(btn);
     }
-};
+}
 
 function create_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
@@ -151,42 +120,7 @@ function create_saved_table() {
             cell4.appendChild(btn);
         }
     });
-};
-
-function create_recent_table(sessions) {
-    var recent_tabs_table = document.getElementById("recent_tabs_table");
-
-    sessions.forEach(function (session, i) {
-        var a = document.createElement('a');
-        if (session.window) {
-            session.window.tabs.forEach(function (tab) {
-                a.href = tab.url;
-                a.appendChild(document.createTextNode(tab.title));
-                a.setAttribute("title", tab.url);
-                a.addEventListener('click', onAnchorClick);
-                console.log(a);
-
-                var favicon = document.createElement('img');
-                favicon.rel = 'shortcut icon';
-                favicon.src = tab.favIconUrl;
-                favicon.type = 'image/x-icon';
-                favicon.width = "20";
-            });
-        } else {
-            a.href = session.tab.url;
-            a.appendChild(document.createTextNode(session.tab.title));
-            a.setAttribute("title", session.tab.title);
-            a.addEventListener('click', onAnchorClick);
-        }
-        var row = recent_tabs_table.insertRow(i);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        cell1.innerHTML = String(i + 1) + ".";
-        cell2.appendChild(a);
-        cell3.appendChild(favicon);
-    });
-};
+}
 
 function destroy_saved_table() {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
@@ -204,7 +138,7 @@ function return_callback(callback) {
     chrome.tabs.query({}, function (tabs) {
         callback(tabs);
     });
-};
+}
 
 function restore_callback(callback) {
     chrome.storage.local.get("saved_tabs", function (items) {
@@ -223,8 +157,8 @@ function save_tabs(tabs) {
     console.log("Executing save_tabs(tabs0 function");
     console.log(tabs);
     var saved_tabs = new Array();
-    for ( var i=0, j=0; i < tabs.length; i++){
-        if(current_tabs_bitVector[i]){
+    for (var i = 0, j = 0; i < tabs.length; i++) {
+        if (current_tabs_bitVector[i]) {
             saved_tabs[j] = tabs[i];
             j++;
         }
@@ -259,7 +193,12 @@ function restore_tabs() {
 
 // Function to export all saved tabs to a .csv file
 function export_tabs(items) {
-    var result = items.saved_tabs.toString();
+    console.log('saving' + items);
+    var result = '';
+    for (var i = 0; i < items.saved_tabs.length; i++) {
+        console.log(items.saved_tabs[i].url);
+        result += items.saved_tabs[i].url.toString() + ',';
+    }
     var download_link = document.createElement("a");
     download_link.href = "data:text/csv," + result;
     console.log(download_link);
@@ -306,93 +245,13 @@ function excludeCurrentTab(event) {
 }
 
 
-//Object to save the url and time
-function track_url(url, time) {
-    this._url = url;
-    this._time = time;
-
-}
-//get the current time
-function set_current_time() {
-    var now = new Date();
-    return now;
-
-}
-//check if track_tabs is empty.
-/*function get_track_tabs(){
- chrome.storage.local.get("track_tabs", function (items) {
- if(items.track_tabs.length > 0){
-
- return false;
- }
- else {
- return true;
- }
- });
- }
- */
-
-//Enter current url to the the track_tabs array
-function track_tabs(current_url) {
-    // console.log("inside track_tabs: " + current_url.length);
-
-    if (current_url.length > 0) {
-
-        var current_url_time = new track_url(current_url[1], set_current_time());
-        console.log("added to local storage : " + current_url_time._url + current_url_time._time);
-        // save the current url object into track_tabs
-        chrome.storage.local.set({"track_tabs": current_url_time}),
-            function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                } else {
-                    console.log("Save to tracker Success.");
-                }
-            };
-    }
-
-    console.log("outside the loop");
-    return false;
-}
-
-setTimeout(return_active_focus(), 2000);
-
-function return_active_focus() {
-    var current_url;
-    console.log("inside return_active_focus");
-    var Regexp = /^(\w+:\/\/[^\/]+).*$/;
-    //check whether the tabs are active in their windows
-    // and whether the tabs are in the current window.
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (current_tabs) {
-        //it should only have one tab.
-        if (current_tabs.length == 1) {
-            current_url = current_tabs[0].url.match(Regexp);
-
-            //Check if the window is focus.
-            chrome.windows.get(current_tabs[0].windowId, function (window) {
-                if (!window.focused) {
-                    current_url = null;
-                    console.log("Current active/focused: NULL ");
-                }
-                // current_url;
-                track_tabs(current_url);
-                console.log("Current active/focused: " + current_url[0]);
-            });
-        }
-    });
-    return false;
-}
-
-
 function removeSaveTab(event) {
-
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
-    // get the button that sevent event listener to remove
-    // tabs
+    // get the button that sevent event listener to remove tabs
     var btn = event.srcElement
 
-    //get the row of the button
+    // get the row of the button
     // identify the row number of the button's row
     var row = btn.parentNode.parentNode;
     var rowInd = row.rowIndex;
@@ -426,55 +285,3 @@ function removeSaveTab(event) {
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
-
-function start(tab) {
-    chrome.windows.getCurrent(getWindows);
-}
-
-function getWindows(win) {
-    targetWindow = win;
-    chrome.tabs.getAllInWindow(targetWindow.id, getTabs);
-}
-
-function getTabs(tabs) {
-    tabCount = tabs.length;
-    // We require all the tab information to be populated.
-    chrome.windows.getAll({"populate": true}, listTabs);
-}
-
-function listTabs(windows) {
-    var test_table = document.getElementById("test_table");
-
-    for (var i = 0; i < windows.length; i++) {
-        var table = document.createElement("table");
-        for (var j = 0; j < windows[i].tabs.length; j++) {
-            var tab = windows[i].tabs[j];
-
-            var a = document.createElement('a');
-            a.href = tab.url;
-            a.appendChild(document.createTextNode(tab.title));
-            a.setAttribute("title", tab.url);
-            a.addEventListener('click', onAnchorClick);
-
-            var favicon = document.createElement('img');
-            favicon.rel = 'shortcut icon';
-            favicon.src = tab.favIconUrl;
-            favicon.type = 'image/x-icon';
-            favicon.width = "20";
-
-            // Inserts created elements into the table in the HTML page
-            var row = test_table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            cell1.innerHTML = String(j + 1) + ".";
-            cell2.appendChild(a);
-            cell3.appendChild(favicon);
-            // console.log(tab.url);
-        }
-
-        test_table.appendChild(table);
-    }
-}
-
-chrome.browserAction.onClicked.addListener(init);
