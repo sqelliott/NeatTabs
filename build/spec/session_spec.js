@@ -15,7 +15,7 @@ describe("Session", function() {
 
     it("should be able to track time spent on a domain", function() {
         timer.track(tab);
-        // expect(timer.tracking).toEqual(domain);
-        // expect(timer).toBeTracking(tab);
+        expect(timer.domain).toEqual(tab);
+        expect(timer).toBeTracking(tab);
     });
 });

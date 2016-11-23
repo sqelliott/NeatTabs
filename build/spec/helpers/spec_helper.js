@@ -3,10 +3,10 @@ beforeEach(function () {
         toBeTracking: function () {
             return {
                 compare: function (actual, expected) {
-                    var player = actual;
+                    var timer = actual;
 
                     return {
-                        pass: player.currentlyPlayingSong === expected && player.isPlaying
+                        pass: timer.domain === expected
                     }
                 }
             };
