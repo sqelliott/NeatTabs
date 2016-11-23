@@ -1,7 +1,17 @@
 describe("Session", function() {
+
+    chrome = {
+        pageAction: {
+            show: function(){},
+            onClicked: {
+                addListener: function(){}
+            }
+        }
+    };
+
     var Tab = require('../lib/tab');
     var Session = require('../lib/session');
-    var Timer = require('../lib/timer');
+    var Timer = require('../src/background/timer');
 
     var tab;
     var session;
