@@ -1,7 +1,7 @@
 var timer = new Timer();
 
 //Fired when a tab is updated or when a new tab is created.
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo,tab){
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         //check if the url if still the current focus.
         timer._updateCurrentFocusTab();
     }
@@ -13,7 +13,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo,tab){
 // to onUpdated events to be notified when a URL is set.
 chrome.tabs.onActivated.addListener(function (activeInfo) {
         chrome.tabs.get(activeInfo.tabId, function (tab) {
-
             timer._setCurrent(tab.url);
         });
     }
@@ -51,7 +50,6 @@ chrome.idle.onStateChanged.addListener(function (idleState) {
 chrome.alarms.create("updateTimer", {periodInMinutes: 1});
 chrome.alarms.onAlarm.addListener(function (alarm) {
     if (alarm.name == "updateTimer") {
-
         if (!timer._idle) {
             timer._updateCurrentFocusTab();
         }

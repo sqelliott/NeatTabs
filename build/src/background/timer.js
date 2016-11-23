@@ -19,10 +19,8 @@ Timer.prototype._addTime = function () {
     if (!self._domain || !self._startTime) {
         return;
     }
-
     var addTime = new Date() - self._startTime;
     var seconds = addTime / 1000;
-
     self._time += seconds;
     self._saveToStorage();
 
@@ -51,7 +49,6 @@ Timer.prototype._setCurrent = function (domain) {
                 self._domain = d[1];
                 self._startTime = new Date();
                 self._time = 0;
-
             }
         }
     }
@@ -77,7 +74,6 @@ Timer.prototype._updateCurrentFocusTab = function () {
             });
         }
     });
-
     return false;
 };
 
@@ -99,7 +95,6 @@ Timer.prototype._saveToStorage = function () {
         }
         else {
             console.log("Time Save Successfully.");
-
         }
     });
     return false;
@@ -118,7 +113,6 @@ Timer.prototype._getFromStorage = function () {
         }
         else if (size == 0) {
             self._storeTime = 0;
-
             return false;
         }
         else {
@@ -127,3 +121,5 @@ Timer.prototype._getFromStorage = function () {
     });
     return false;
 };
+
+module.exports = Timer;

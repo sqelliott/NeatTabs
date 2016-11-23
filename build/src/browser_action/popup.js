@@ -3,7 +3,6 @@ current_tabs_bitVector = new Array();
 
 function init() {
     console.log("Starting Logging");
-
     return_callback(create_current_table);
 
     document.getElementById("save_menu").addEventListener("click", function () {
@@ -241,7 +240,7 @@ function removeSaveTab(event) {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
     // get the button that sevent event listener to remove tabs
-    var btn = event.srcElement
+    var btn = event.srcElement;
 
     // get the row of the button
     // identify the row number of the button's row

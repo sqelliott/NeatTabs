@@ -1,4 +1,4 @@
-describe("Session", function() {
+describe("Timer", function() {
 
     chrome = {
         pageAction: {
@@ -23,9 +23,9 @@ describe("Session", function() {
         timer = new Timer();
     });
 
-    it("should be able to track time spent on a domain", function() {
-        timer.track(tab);
-        expect(timer.domain).toEqual(tab);
-        expect(timer).toBeTracking(tab);
+    it("should be able to set a domain", function() {
+        spyOn(timer, '_time');
+        timer._setCurrent('https://test.com');
+        expect(timer._domain).not.toEqual(null);
     });
 });
