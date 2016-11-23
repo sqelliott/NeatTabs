@@ -177,8 +177,13 @@ function clear_storage() {
 function restore_tabs() {
     chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items);
-        console.log('restore tabs');
-        chrome.windows.create({focused: true, url: items.saved_tabs});
+        // chrome.windows.create({focused: true, url: items.saved_tabs});
+
+        var urls = [];
+        for (var i = 0; i < items.saved_tabs.length; i++) {
+            urls[i] = items.saved_tabs[i].url;
+        }
+        chrome.windows.create({focused: true, url: urls});
     });
 }
 
@@ -276,3 +281,5 @@ function removeSaveTab(event) {
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
+
+module.exports = Popup;

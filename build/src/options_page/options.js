@@ -13,7 +13,7 @@ function create_saved_table() {
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';
-            console.log(items);
+            // console.log(items);
             favicon.src = items.saved_tabs[i].favIconUrl;
             favicon.type = 'image/x-icon';
             favicon.width = "20";
@@ -37,7 +37,7 @@ function create_saved_table() {
             cell4.appendChild(btn);
         }
     });
-};
+}
 
 function removeSaveTab(event) {
 
@@ -45,7 +45,7 @@ function removeSaveTab(event) {
 
     // get the button that sevent event listener to remove
     // tabs
-    var btn = event.srcElement
+    var btn = event.srcElement;
 
     //get the row of the button
     // identify the row number of the button's row
@@ -272,8 +272,12 @@ function clear_storage() {
 function restore_tabs() {
     chrome.storage.local.get("saved_tabs", function (items) {
         console.log(items);
-        console.log('restore tabs');
-        chrome.windows.create({focused: true, url: items.saved_tabs});
+
+        var urls = [];
+        for (var i = 0; i < items.saved_tabs.length; i++) {
+            urls[i] = items.saved_tabs[i].url;
+        }
+        chrome.windows.create({focused: true, url: urls});
     });
 }
 

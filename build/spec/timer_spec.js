@@ -16,13 +16,13 @@ describe("Timer", function() {
     };
 
     var Timer = require('../src/background/timer');
-
     var timer;
 
     beforeEach(function() {
         timer = new Timer();
     });
 
+    // Unit Test 1
     it("should be able to set a domain", function() {
         spyOn(timer, '_time');
         timer._setCurrent('https://test.com');
@@ -30,6 +30,7 @@ describe("Timer", function() {
         console.log("Unit Test: Timer Domain - " + timer._domain);
     });
 
+    // Unit Test 2
     it("should be able to save to storage", function() {
         timer._setCurrent('https://test.com');
         // timer._saveToStorage(timer);
