@@ -32,21 +32,6 @@ To Be Implemented
 
 ### Directory Layout
 
-.
-├── build                   # Compiled files (alternatively `dist`)
-
-├── docs                    # Documentation files (alternatively `doc`)
-
-├── src                     # Source files (alternatively `lib` or `app`)
-
-├── testing                 # Automated tests (alternatively `spec` or `tests`)
-
-├── tools                   # Tools and utilities
-
-├── LICENSE
-
-└── README.md
-
 ### Future
 
 This is very much an app developed for a quarter-based class. All in all, we only have around 10 weeks (3 sprints) from start to finish to work on this extension. While the future is uncertain (most likely bleak), we hope that you take this and further develop it on your own time!
