@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="../../js/loader.js"></script>
+    <script type="text/javascript">
+        //call API
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="../../js/loader.js"></script>
+    <script type="text/javascript">
+        //call API
+    google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Language');
+        data.addColumn('number', 'Speakers (in millions)');
+        data.addColumn({type: 'string', role: 'tooltip'});
+
+        /*
+        data.addRows([
+         ['German',  5.85, 'Hours: Germany'],
+          ['French',  1.66, 'Hours: France'],
+          ['Italian', 3.16, 'Hours: Italy '],
+          ['Romansh', 7.91, 'Hours: Romania']
+        
+        ]);*/
+
+        chrome.storage.local.get(null, function(items) {
+                for (key in items) {
+                    data.addRow([key._domain, key_storeTime, key._storeTime});//: (array.i.time%60)}, ()]) //f  3ormats into hr:min
+                }
+
+
+        
+         var colors = ["#fb9a99", "#a6cee3","#6a3d9a", "#ff7f00", "#1f78b4","#b2df8a","980043", "#33a02c","#e31a1c", "#fdbf6f", "#cab2d6", "ffff99"];
+        
+      var options = {
+        legend: 'none',
+       tooltip: {isHtml: true},
+       colors: colors,
+        pieSliceText: 'label',
+        title: 'Pizza Toppings',
+        
+      };
+      
+      
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+
+
+
+    </script>
+</head>
+<body>
+    <div id= "piechart" style="width: x; height: y;"></div>
+</body>
+</html>
+
+
+
+
+    </script>
+</head>
+<body>
+    <div id= "piechart" style="width: x; height: y;"></div>
+</body>
+</html>
+
+

@@ -2,69 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0812e34-fa87-4ac3-812e-ae4ac129bac3" name="Default" comment="Merge branch 'master' of https://github.com/acchiao/NeatTabs into NeatTabs-Richa&#10;&#10;# Conflicts:&#10;#&#9;build/src/options_page/visualization.html&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/Acceptance Criteria.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/Working Prototypes Known Problems Report.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/Sprint 3/Sprint 3 Report.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../LICENSE" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/loader.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/session.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/tab.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/timer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/options-setup.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/helpers/spec_helper.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/session_spec.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/support/jasmine.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/background/timer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/browser_action/session.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/browser_action/tab.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options-cros.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options-linux.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options-mac.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options-widgets.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options-win.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles/options.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/Defintion of Done.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/General.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/System and Unit Test Report.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/General/Team Working Agreements.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs/Sprint 2/Sprint 2 Plan.md" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/NeatTabs.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/_locales/en/messages.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/MIT.LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/SpecRunner.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/boot.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/console.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/jasmine-html.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/jasmine.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/jasmine.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/lib/jasmine-2.5.2/jasmine_favicon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/spec/PlayerSpec.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/spec/SpecHelper.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/src/Player.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/jasmine/src/Song.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/options_custom/settings.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../popup.js" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Release Plan.md" afterPath="$PROJECT_DIR$/../docs/General/Release Plan.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Sprint 1 Plan.md" afterPath="$PROJECT_DIR$/../docs/Sprint 1/Sprint 1 Plan.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Sprint Backlog.md" afterPath="$PROJECT_DIR$/../docs/General/Sprint Backlog.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Sprint1Report.txt" afterPath="$PROJECT_DIR$/../docs/Sprint 1/Sprint 1 Report.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Sprint2Report.txt" afterPath="$PROJECT_DIR$/../docs/Sprint 2/Sprint 2 Report.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../docs/Sprint3Plan-NeatTabs.txt" afterPath="$PROJECT_DIR$/../docs/Sprint 3/Sprint 3 Plan.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/custom.css" afterPath="$PROJECT_DIR$/css/custom.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/background/background.html" afterPath="$PROJECT_DIR$/src/background/background.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/browser_action/browser_action.html" afterPath="$PROJECT_DIR$/src/browser_action/browser_action.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/browser_action/popup.js" afterPath="$PROJECT_DIR$/src/browser_action/popup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/options_page/options.html" afterPath="$PROJECT_DIR$/src/options_page/options.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/options_page/options.js" afterPath="$PROJECT_DIR$/src/options_page/options.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/options_page/visualization.html" afterPath="$PROJECT_DIR$/src/options_page/visualization.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/unit_tests/unit_tests.html" afterPath="$PROJECT_DIR$/src/unit_tests/unit_tests.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/unit_tests/unit_tests.js" afterPath="$PROJECT_DIR$/src/unit_tests/unit_tests.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../NeatTabs" afterPath="$PROJECT_DIR$/../NeatTabs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -84,15 +23,13 @@
     <favorites_list name="build" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file leaf-file-name="options-setup.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/options-setup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1816">
-              <caret line="63" column="29" lean-forward="true" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="1254">
+              <caret line="63" column="29" lean-forward="false" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,8 +37,8 @@
       <file leaf-file-name="visualization.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/options_page/visualization.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+            <state relative-caret-position="396">
+              <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -146,8 +83,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -240,6 +175,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -256,31 +193,32 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1479902918196</updated>
-      <workItem from="1479902921306" duration="493000" />
+      <workItem from="1479902921306" duration="695000" />
+      <workItem from="1479931422522" duration="306000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="493000" />
+    <option name="totallyTimeSpent" value="1001000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1932" height="1038" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973877" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973877" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -298,18 +236,32 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scripts/options-setup.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1816">
-          <caret line="63" column="29" lean-forward="true" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state relative-caret-position="1386">
+          <caret line="63" column="29" lean-forward="false" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/options_page/visualization.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/options-setup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1254">
+          <caret line="63" column="29" lean-forward="false" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/options_page/visualization.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="27" column="30" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
           <folding />
         </state>
       </provider>
