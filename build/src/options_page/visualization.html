@@ -1,44 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        //call API
-        google.charts.load(current, {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        //create data
+<html>
+<head><title>This is a test</title></head>
+<meta charset="utf-8">
+<style type = "text/css">
 
-        //create table
-        function drawChart(){
-            var data = google.visualization.DataTable();
-            data.addColumn('string','Domain');
-            data.addColumn('number', 'Time (Min)');
+    .arc text {
+        font: 10px sans-serif;
+        text-anchor: middle;
+    }
 
-            chrome.storage.local.get(null, function(items) {
-                for (key in items) {
-                    data.addRow([key._domain, key_storeTime])//: (array.i.time%60)}, ()]) //f  3ormats into hr:min
-                };
-            });
+    .arc path {
+        stroke: #fff;
+    }
 
+</style>
 
-            var options = {
-                title: 'Online Activity Broken Down By Time',
-                legend: 'none',
-            }
-]
-            var chart = new google.visualization.PieChart(document.getElementById("piechart"));
-
-            chart.draw(data, options);
-
-        };
-
-
-
-    </script>
-</head>
 <body>
-    <div id= "piechart" style="width: x; height: y;"></div>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script type = "text/javascript">
+
+    var data = [];
+
+    /*data.push({"domain": "Hello" , "time": 1});
+    data.push({"domain": "World" , "time": 2});
+    data.push({"domain": "Bye" , "time": 3});
+    /*data.push({"domain": "Ms." , "time": 2.4});
+     data.push({"domain": "Rica" , "time": 1.3});*/
+
+
+
+    chrome.storage.local.get(null, function(items) {
+     for (key in items) {
+     data.push({"domain": key._domain , "time": key_storeTime});
+     }
+     });
+
+
+    var width = 960,
+        height = 500,
+        radius = Math.min(width, height) / 2;
+
+    var color = d3.scale.ordinal()
+        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+    ////finished with constants
+
+    //creates the SVG variable
+    var visual = d3.select("body").append("svg")
+        .data([data])
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    //defines the arc for the pie chart
+    var arc = d3.svg.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+
+    //defines the position of the label for an arc
+    /*var labelArc = d3.svg.arc()
+     .outerRadius(radius - 40)
+     .innerRadius(radius - 40);*/
+
+    //creates a pie
+    var pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) { return d.time; });
+
+
+    var arcs = visual.selectAll("g.slice")
+        .data(pie)
+        .enter()
+        .append("g")
+        .attr("class", "slice");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .style("fill", function(d,i) { return color(i); });//change color
+
+    arcs.append("text")
+        .attr("transform", function(d) { d.innerRadius = 0;
+            d.outerRadius = radius-10;
+            return "translate(" + arc.centroid(d) + ")"; })
+        .attr("text-anchor", "middle")
+        .text(function(d,i) { return data[i].domain; });
+
+
+</script>
 </body>
 </html>
-
-
