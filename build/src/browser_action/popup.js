@@ -71,7 +71,6 @@ function create_current_table(tabs) {
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-
         cell3.appendChild(favicon);
         cell1.innerHTML = String(i + 1) + ".";
         cell2.appendChild(a);
@@ -244,6 +243,7 @@ function excludeCurrentTab(event) {
         console.log("Include " + (rowInd + 1) + " from current_tabs_table");
     }
 }
+
 
 function removeSaveTab(event) {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
