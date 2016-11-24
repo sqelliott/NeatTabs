@@ -7,9 +7,9 @@ function create_saved_table() {
 
             // Creates table elements along with tooltips
             var a = document.createElement('a');
-            a.href = items.saved_tabs[i];
+            a.href = items.saved_tabs[i].url;
             a.appendChild(document.createTextNode(items.saved_tabs[i].title));
-            a.setAttribute("title", items.saved_tabs[i]);
+            a.setAttribute("title", items.saved_tabs[i].title);
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';
