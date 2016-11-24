@@ -53,7 +53,6 @@ function timeString(numSeconds) {
 function displayData(items) {
     // Get the domain data
     var limited_data = [];
-    var chart_data = [];
     var domains = Object.keys(items);
     var times = Object.values(items);
     var chart_limit;
@@ -97,7 +96,7 @@ function drawChart(chart_data) {
             text: 'percentage'
         },
         chartArea: {
-            width: 400,
+            width: 600,
             height: 180
         }
     };
