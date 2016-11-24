@@ -281,5 +281,3 @@ function removeSaveTab(event) {
 
 // Initialization routine
 document.addEventListener('DOMContentLoaded', init);
-
-module.exports = Popup;

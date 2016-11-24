@@ -34,10 +34,6 @@
     "storage",
     "downloads",
     "alarms",
-    "idle",
-    "webNavigation",
-    "<all_urls>",
-    "webRequest",
-    "webRequestBlocking"
+    "idle"
   ]
 }
