@@ -1,18 +1,14 @@
-var bg = chrome.extension.getBackgroundPage();
-console.log('VIS');
 // Load the Visualization API and the piechart package.
 google.load('visualization', '1.0', {
-    'packages': ['corechart', 'table']
+    'packages': ['corechart']
 });
 
 google.setOnLoadCallback(function () {
     return_callback(displayData);
 });
 
-
 function return_callback(callback) {
     chrome.storage.local.get(null, function (items) {
-        // console.log(items);
         callback(items);
     });
 }
