@@ -4,10 +4,12 @@
 <head>
     <script src="../../js/jquery-2.0.3.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
+
+    <script src ='../background/timer.js'></script>
     <script src='popup.js'></script>
-    <script src ='../background/tabsTimeTracker.js'></script>
-    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/css/custom.css" rel="stylesheet" media="screen">
+
+    <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../css/custom.css" rel="stylesheet" media="screen">
 </head>
 <body>
     <nav class="navbar navbar-inverse" role="navigation">
@@ -16,20 +18,11 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#" id="current_tabs">Current Tabs</a></li>
                 <li><a href="#" id="save_menu">Save</a></li>
                 <li><a href="#" id="restore_menu">Restore</a></li>
                 <li><a href="#" id="clear_menu">Clear</a></li>
                 <li><a href="#" id="options_menu">Options</a></li>
                 <li><a href="#" id="export_menu">Export</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" id="track_menu">Track</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#" id="about">About</a></li>
-                    </ul>
-                </li>
             </ul>
         </div>
         <div id='mostVisited_div'></div>

@@ -134,6 +134,7 @@ function init() {
     create_saved_table();
     return_callback(create_current_table);
 
+    // Sidebar functionality
     document.getElementById('history').addEventListener('click', function () {
         chrome.tabs.update({url: 'chrome://chrome/history'});
     });
@@ -145,6 +146,28 @@ function init() {
     });
     document.getElementById('about').addEventListener('click', function () {
         chrome.tabs.update({url: 'chrome://chrome/help'});
+    });
+
+    // Menu bar functionality
+    document.getElementById("save_menu").addEventListener("click", function () {
+        console.log("Saving Session.");
+        return_callback(save_tabs);
+    });
+    document.getElementById("restore_menu").addEventListener("click", function () {
+        console.log("Restoring Session.");
+        restore_tabs();
+    });
+    document.getElementById("clear_menu").addEventListener("click", function () {
+        console.log("Clearing Session.");
+        clear_storage();
+    });
+    document.getElementById("about_menu").addEventListener("click", function () {
+        console.log("Opening GitHub.");
+        chrome.tabs.create({url: "https://github.com/acchiao/NeatTabs"});
+    });
+    document.getElementById("export_menu").addEventListener("click", function () {
+        console.log("Exporting Session.");
+        restore_callback(export_tabs);
     });
 }
 

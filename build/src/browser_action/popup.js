@@ -1,20 +1,13 @@
-// Initialization function
-
-//control tabs to be saved by user
+// Control tabs to be saved by user
 current_tabs_bitVector = new Array();
 
 function init() {
     console.log("Starting Logging");
-
     return_callback(create_current_table);
 
     document.getElementById("save_menu").addEventListener("click", function () {
         console.log("Saving Session.");
         return_callback(save_tabs);
-    });
-    document.getElementById("track_menu").addEventListener("click", function () {
-        console.log("Tracking Session.");
-        return_callback(track_tabs);
     });
     document.getElementById("restore_menu").addEventListener("click", function () {
         console.log("Restoring Session.");
@@ -25,10 +18,8 @@ function init() {
         clear_storage();
     });
     document.getElementById("options_menu").addEventListener("click", function () {
-
         console.log("Opening Options.");
         chrome.tabs.create({url: "src/options_page/options.html"});
-
     });
     document.getElementById("export_menu").addEventListener("click", function () {
         console.log("Exporting Session.");
@@ -249,7 +240,7 @@ function removeSaveTab(event) {
     var saved_tabs_table = document.getElementById("saved_tabs_table");
 
     // get the button that sevent event listener to remove tabs
-    var btn = event.srcElement
+    var btn = event.srcElement;
 
     // get the row of the button
     // identify the row number of the button's row

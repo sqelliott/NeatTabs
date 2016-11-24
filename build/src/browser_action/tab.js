@@ -1,4 +1,4 @@
-function session(name) {
+function tab(name) {
     this.url = "";
     this.title = "";
     this.icon = "";
