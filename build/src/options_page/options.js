@@ -13,7 +13,6 @@ function create_saved_table() {
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';
-            console.log(items);
             favicon.src = items.saved_tabs[i].favIconUrl;
             favicon.type = 'image/x-icon';
             favicon.width = "20";

@@ -83,8 +83,8 @@ function create_saved_table() {
     destroy_saved_table();
 
     chrome.storage.local.get("saved_tabs", function (items) {
-        console.log("saved table");
-        console.log(items.saved_tabs);
+        // console.log("saved table");
+        // console.log(items.saved_tabs);
         for (var i = 0; i < items.saved_tabs.length; i++) {
 
             // Creates table elements along with tooltips
@@ -96,7 +96,7 @@ function create_saved_table() {
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';
-            console.log(items);
+            // console.log(items);
             favicon.src = items.saved_tabs[i].favIconUrl;
             favicon.type = 'image/x-icon';
             favicon.width = "20";
@@ -196,7 +196,7 @@ function export_tabs(items) {
     console.log('saving' + items);
     var result = '';
     for (var i = 0; i < items.saved_tabs.length; i++) {
-        console.log(items.saved_tabs[i].url);
+        // console.log(items.saved_tabs[i].url);
         result += items.saved_tabs[i].url.toString() + ',';
     }
     var download_link = document.createElement("a");
