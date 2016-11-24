@@ -3,17 +3,23 @@
 
 <head>
     <title>Options - NeatTabs</title>
+    <script src="https://www.google.com/jsapi"></script>
     <link rel="stylesheet" type="text/css" href="../../styles/options.css"/>
     <link rel="stylesheet" type="text/css" href="../../styles/options-widgets.css"/>
     <link rel="stylesheet" type="text/css" href="../../styles/options-mac.css"/>
 
     <script src="../../js/jquery-2.0.3.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/jsapi.js"></script>
+
+
     <link href="../../css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="../../css/custom.css" rel="stylesheet" media="screen">
 
     <!--<script type="text/javascript" src="../../scripts/options-setup.js"></script>-->
     <script type="text/javascript" src="options.js"></script>
+    <script type="text/javascript" src="visualization.js"></script>
+
 </head>
 
 <body>
@@ -42,10 +48,12 @@
             <li><a href="#" id="restore_menu">Restore</a></li>
             <li><a href="#" id="clear_menu">Clear</a></li>
             <li><a href="#" id="export_menu">Export</a></li>
+
             <li><a href="#" id="about_menu">About Us</a></li>
         </ul>
     </div>
-
+    <h1>Visualization</h1>
+    <div id="chart_div"></div>
     <div class="options_table">
         <table class="table" id="saved_tabs_table">
             <caption>Saved Tabs</caption>
@@ -54,6 +62,7 @@
             <caption>Current Tabs</caption>
         </table>
     </div>
+
 </body>
 
 </html>

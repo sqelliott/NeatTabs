@@ -9,6 +9,7 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google.com https://platform.twitter.com; object-src 'self'",
   "background": {
     "page": "src/background/background.html",
     "persistent": true
@@ -24,6 +25,7 @@
     "default_title": "NeatTabs",
     "default_popup": "src/browser_action/browser_action.html"
   },
+
   "permissions": [
     "bookmarks",
     "history",
@@ -32,6 +34,10 @@
     "storage",
     "downloads",
     "alarms",
-    "idle"
+    "idle",
+    "webNavigation",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking"
   ]
 }
