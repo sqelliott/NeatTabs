@@ -10,7 +10,6 @@ function create_saved_table() {
             a.href = items.saved_tabs[i].url;
             a.appendChild(document.createTextNode(items.saved_tabs[i].title));
             a.setAttribute("title", items.saved_tabs[i].title);
-            // a.addEventListener('click', onAnchorClick);
 
             var favicon = document.createElement('img');
             favicon.rel = 'shortcut icon';

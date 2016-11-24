@@ -122,4 +122,3 @@ Timer.prototype._getFromStorage = function () {
     return false;
 };
 
-module.exports = Timer;
