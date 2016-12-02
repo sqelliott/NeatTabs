@@ -39,4 +39,12 @@ a:focus, a:active {
 
 table {
     display: inline-block;
+    width:600px;
 }
+
+table tr {
+    width:600px;
+}
+
+/*table.fixed { table-layout:fixed; }*/
+/*table.fixed td { overflow: hidden; }*/
